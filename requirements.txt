@@ -1,0 +1,14 @@
+# Python 3.12. Ghi đúng phiên bản đã dùng: pip freeze > requirements-lock.txt (xem HUONG_DAN_GITHUB.txt)
+numpy
+pandas
+scipy
+matplotlib
+openpyxl
+pyomo
+highspy
+pandapower
+# chỉ cần cho baseline PPO (run_drl.py):
+gymnasium
+stable-baselines3
+torch
+# tùy chọn cho C* (step4_cstar.py), không có thì dùng HiGHS: cplex hoặc gurobipy

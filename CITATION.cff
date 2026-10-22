@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper below."
+title: "Lifetime-Guaranteed Online Control of Hydrogen-Integrated EV Fast-Charging Stations under Distribution Congestion"
+authors:
+  - family-names: "Le"
+    given-names: "Dinh Quyen"
+    affiliation: "University of Science and Technology - The University of Danang"
+# TODO: thêm đồng tác giả (family-names / given-names / affiliation) và ORCID nếu có
+version: "1.0.0"
+date-released: "2026-10-23"
+license: MIT
+repository-code: "https://github.com/TEN-TAI-KHOAN/TEN-KHO"   # TODO: thay link thật
+# doi: "10.5281/zenodo.XXXXXXX"                                # TODO: thêm sau khi tạo DOI Zenodo
