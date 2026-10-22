@@ -1,0 +1,102 @@
+{
+  "dt_h": 0.08333333333333333,
+  "LHV_kWh_per_kg": 33.33,
+  "aging_and_devices": {
+    "fc": {
+      "V_rated_cell_uV": 700000.0,
+      "k_ss_uV": 13.79,
+      "k_lc_uV_per_kW": 1.79,
+      "k_lo_uV_per_h": 8.66,
+      "k_hp_uV_per_h": 10.0,
+      "module_kW": 50.0,
+      "P_lo_frac": 0.2,
+      "P_hi_frac": 0.8,
+      "P_min_frac": 0.1,
+      "eta_peak": 0.5,
+      "stack_cost_CNY_per_kW": 2000.0,
+      "life_target_h": 43800
+    },
+    "el": {
+      "V_rated_cell_uV": 1900000.0,
+      "a0_uV_per_h": 4.8,
+      "a_sd_uV": 10.4,
+      "P_min_frac": 0.1,
+      "kWh_per_kg": 55.0,
+      "stack_cost_CNY_per_kW": 3150.0,
+      "life_target_h": 43800
+    },
+    "bat": {
+      "eta_ch": 0.95,
+      "eta_dis": 0.95,
+      "soc_min": 0.1,
+      "soc_max": 0.9,
+      "c_bat_CNY_per_kWh": 0.05
+    },
+    "tank": {
+      "fill_min": 0.1,
+      "fill_max": 0.95,
+      "e_cp_kWh_per_kg": 2.5
+    }
+  },
+  "stations": [
+    {
+      "station_id": 1061,
+      "pv_kWp": 50.0,
+      "bat_kWh": 100.0,
+      "bat_kW": 50.0,
+      "has_h2": false
+    },
+    {
+      "station_id": 1087,
+      "pv_kWp": 100.0,
+      "bat_kWh": 200.0,
+      "bat_kW": 100.0,
+      "has_h2": false
+    },
+    {
+      "station_id": 1093,
+      "pv_kWp": 230.0,
+      "bat_kWh": 470.0,
+      "bat_kW": 235.0,
+      "has_h2": true,
+      "fc_kW": 100.0,
+      "el_kW": 100.0,
+      "tank_kg": 60.0
+    },
+    {
+      "station_id": 1214,
+      "pv_kWp": 40.0,
+      "bat_kWh": 80.0,
+      "bat_kW": 40.0,
+      "has_h2": false
+    },
+    {
+      "station_id": 1229,
+      "pv_kWp": 80.0,
+      "bat_kWh": 150.0,
+      "bat_kW": 75.0,
+      "has_h2": false
+    },
+    {
+      "station_id": 1242,
+      "pv_kWp": 220.0,
+      "bat_kWh": 450.0,
+      "bat_kW": 225.0,
+      "has_h2": true,
+      "fc_kW": 100.0,
+      "el_kW": 100.0,
+      "tank_kg": 60.0
+    },
+    {
+      "station_id": 1589,
+      "pv_kWp": 480.0,
+      "bat_kWh": 970.0,
+      "bat_kW": 485.0,
+      "has_h2": true,
+      "fc_kW": 250.0,
+      "el_kW": 250.0,
+      "tank_kg": 150.0
+    }
+  ],
+  "notes": "Các giá trị ghi 'giả định'/'cần xác minh' phải được kiểm tra nguồn trước khi nộp bài."
+}

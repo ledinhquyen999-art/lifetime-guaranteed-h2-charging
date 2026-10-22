@@ -1,0 +1,777 @@
+======================================================================================================================
+TỔNG HỢP CUỐI CÙNG – cấu hình chính S3: w_Z = 1e10, V = 1 – tạo lúc 2026-10-19 13:40
+======================================================================================================================
+
+Trạng thái các giai đoạn lần chạy này: F: xong sau 0 phút
+
+BẢNG 1 – SO SÁNH CHÍNH, 30 ngày từ 2022-11-01 (7 trạm thật, 3 trạm có H2). Chi phí = K2 hiệu chỉnh cuối kỳ.
+C* (biết trước tương lai, LP): ≥ 581,403 CNY (cận dưới), lời giải tốt nhất 581,403 CNY → khoảng cách tính theo cận dưới (bảo thủ)
+
+phương pháp                           chi phí CNY    (K2 thô)   so S1  cách C*  vượt MBA MWh   so S1  FC ≥ năm  lý thuyết
+S1 – không H2                             711,323     710,879   +0.0%   +22.3%          73.4       —       nan  ĐẠT hết
+S3 – ĐỀ XUẤT (w_Z = 1e10)                 679,847     678,245   -4.4%   +16.9%          59.7  -18.6%       6.6  ĐẠT hết
+S3 – w_Z = 3e8 (ưu tiên chi phí)          676,952     675,420   -4.8%   +16.4%          58.1  -20.8%       5.8  ĐẠT hết
+B0 – Lyapunov không tính lão hóa        1,010,228   1,008,627  +42.0%   +73.8%          52.4  -28.6%       0.2  ĐẠT hết  [hiệu chỉnh tính từ timeseries]
+B2 – quy tắc                              836,716     834,654  +17.6%   +43.9%          60.0  -18.2%       1.3  không có bảo đảm  [hiệu chỉnh tính từ timeseries]
+B1 – MPC 24 h (dự báo)                    735,328     733,004   +3.4%   +26.5%          57.2  -22.1%       1.2  không có bảo đảm  [hiệu chỉnh tính từ timeseries]
+B1* – MPC 24 h biết trước                 664,252     661,632   -6.6%   +14.2%          50.3  -31.4%       1.9  không có bảo đảm  [hiệu chỉnh tính từ timeseries]
+B1L – MPC + ràng buộc tuổi thọ            739,140     737,041   +3.9%   +27.1%          70.1   -4.4%       4.9  không có bảo đảm
+B1L* – MPC biết trước + tuổi thọ          685,342     683,312   -3.7%   +17.9%          63.5  -13.5%       4.9  không có bảo đảm
+  'FC ≥ năm' = tuổi thọ FC thấp nhất trong 3 trạm theo tốc độ già của kỳ; mục tiêu 5 năm.
+
+BẢNG 2 – GIÁ CỦA BẢO ĐẢM TUỔI THỌ, 6 tháng 2022-09 → 2023-02 (Hệ quả 1: FC bảo đảm ≥ 5·(1 − Z_max) năm cho MỌI chuỗi dữ liệu)
+
+cấu hình                    chi phí CNY   so S1  vượt MBA MWh   so S1    Z_max  FC BẢO ĐẢM ≥  FC quan sát  lý thuyết
+S1 – không H2                 3,786,973       —         384.9       —
+S3, w_Z = 3e8                 3,536,533   -6.6%         298.0  -22.6%   0.5161       2.42 năm      6.3 năm  ĐẠT hết
+S3, w_Z = 1e9                 3,576,921   -5.5%         311.8  -19.0%   0.1557       4.22 năm      6.8 năm  ĐẠT hết
+S3, w_Z = 3e9                 3,600,306   -4.9%         318.5  -17.2%   0.0527       4.74 năm      7.1 năm  ĐẠT hết
+S3, w_Z = 1e10  ← CHÍNH       3,603,105   -4.9%         319.4  -17.0%   0.0167       4.92 năm      7.3 năm  ĐẠT hết
+
+KIỂM TRA LÝ THUYẾT trên 76 lần chạy dùng w_Z = 1e10 (mọi bổ đề, mệnh đề, hệ quả in trong từng summary): ĐẠT HẾT
+
+######################################################################################################################
+[A] Đánh đổi chi phí – tuổi thọ bảo đảm (30 ngày quét w_Z, V; 6 tháng 3e8/1e9/3e9/1e10)   ← results/tradeoff_summary.txt
+######################################################################################################################
+ĐÁNH ĐỔI CHI PHÍ – TUỔI THỌ BẢO ĐẢM – 30 ngày từ 2022-11-01 – tuổi thọ mục tiêu FC 5 năm – xong sau 45 phút
+
+   w_Z     V  chi phí CNY   so S1  vượt MBA so S1  Z_max (cận)   FC BẢO ĐẢM ≥ năm  FC quan sát  lý thuyết
+   1e8     1      678,050   -4.7%          -21.6%       1.5460              -2.73          5.1  ĐẠT hết
+   3e8     1      676,952   -4.8%          -20.8%       0.5161               2.42          5.8  ĐẠT hết
+   1e9     1      679,279   -4.5%          -18.3%       0.1557               4.22          6.6  ĐẠT hết
+   3e9     1      678,656   -4.6%          -18.7%       0.0527               4.74          6.6  ĐẠT hết
+  1e10     1      679,847   -4.4%          -18.6%       0.0167               4.92          6.6  ĐẠT hết
+  1e10  0.25      801,060   12.6%           13.8%       0.0114               4.94          6.4  ĐẠT hết
+  1e10   0.5      752,049    5.7%            2.0%       0.0131               4.93          6.4  ĐẠT hết
+
+6 THÁNG (2022-09 → 2023-02), V = 1 – đường "giá của bảo đảm":
+  không H2 (S1)                chi phí 3,786,973 CNY | vượt MBA 384.9 MWh
+  w_Z = 3e8                    chi phí 3,536,533 CNY | vượt MBA 298.0 MWh | so S1: chi phí -6.6%, vượt MBA -22.6% | Z_max 0.5161 → FC BẢO ĐẢM ≥ 2.42 năm | FC quan sát 6.3 năm | ĐẠT hết
+  w_Z = 1e9                    chi phí 3,576,921 CNY | vượt MBA 311.8 MWh | so S1: chi phí -5.5%, vượt MBA -19.0% | Z_max 0.1557 → FC BẢO ĐẢM ≥ 4.22 năm | FC quan sát 6.8 năm | ĐẠT hết
+  w_Z = 3e9                    chi phí 3,600,306 CNY | vượt MBA 318.5 MWh | so S1: chi phí -4.9%, vượt MBA -17.2% | Z_max 0.0527 → FC BẢO ĐẢM ≥ 4.74 năm | FC quan sát 7.1 năm | ĐẠT hết
+  w_Z = 1e10 (CẤU HÌNH CHÍNH)  chi phí 3,603,105 CNY | vượt MBA 319.4 MWh | so S1: chi phí -4.9%, vượt MBA -17.0% | Z_max 0.0167 → FC BẢO ĐẢM ≥ 4.92 năm | FC quan sát 7.3 năm | ĐẠT hết
+
+Chi phí = K2 HIỆU CHỈNH cuối kỳ (trừ phần năng lượng pin, bồn còn lại/đã tiêu so với đầu kỳ) khi có; bản cũ chưa có dòng này thì dùng K2 thô.
+Đọc: tuổi thọ BẢO ĐẢM là cận dưới chứng minh được cho MỌI chuỗi dữ liệu (Hệ quả 1); tuổi thọ quan sát là tốc độ già thực tế trong kỳ.
+Nếu chi phí ở w_Z lớn gần bằng w_Z = 3e8 thì nên đổi cấu hình chính sang w_Z lớn: bảo đảm gần đủ 5 năm mà gần như không tốn thêm.
+
+######################################################################################################################
+[B] So sánh với baseline – 30 ngày (S1, B0, quy tắc, MPC ×4)   ← results/batch_2022-11-01_30d/compare.txt
+######################################################################################################################
+SO SÁNH KỊCH BẢN – 30 ngày từ 2022-11-01 
+
+kịch bản       lý thuyết         chi phí CNY  CNY/kWh  vượt MBA MWh  giờ vượt   phạt CNY  mua lưới MWh
+S1             ĐẠT hết               710,879   0.8128         73.36     281.0    366,790         716.6
+B0_noAging     ĐẠT hết             1,008,627   1.1532         52.37     227.8    261,829         757.0
+S3_wZ1e10      ĐẠT hết               678,245   0.7755         59.68     248.6    298,415         733.8
+B2_rule        không bảo đảm         834,654   0.9543         60.03     250.8    300,141         777.6
+B1_mpc         không bảo đảm         733,004   0.8381         57.17     238.2    285,837         763.0
+B1_mpc_oracle  không bảo đảm         661,632   0.7565         50.30     212.2    251,487         748.3
+B1_mpc_life    không bảo đảm         737,041   0.8427         70.12     273.1    350,575         731.7
+B1_mpc_life_or không bảo đảm         683,312   0.7812         63.49     245.6    317,463         720.1
+
+Trạm có H2: vượt MBA (MWh) | FC phát lúc đang vượt (MWh) | H2 dùng (kg) | tuổi thọ FC dự kiến (năm)
+  S1              1093: vượt 0.70  1242: vượt 1.38  1589: vượt 69.03
+  B0_noAging      1093: 0.08 | 0.17 | 148 kg | 0.2 n  1242: 0.34 | 0.47 | 150 kg | 0.2 n  1589: 49.69 | 7.14 | 1290 kg | 0.2 n
+  S3_wZ1e10       1093: 0.27 | 0.13 | 44 kg | 11.1 n  1242: 1.16 | 0.14 | 28 kg | 7.0 n  1589: 56.01 | 5.15 | 869 kg | 6.6 n
+  B2_rule         1093: 0.20 | 0.38 | 284 kg | 2.3 n  1242: 0.72 | 0.98 | 554 kg | 1.3 n  1589: 56.95 | 4.04 | 578 kg | 2.1 n
+  B1_mpc          1093: 1.84 | 0.00 | 0 kg | inf n  1242: 2.15 | 0.00 | 0 kg | inf n  1589: 49.89 | 6.15 | 1327 kg | 1.2 n
+  B1_mpc_oracle   1093: 0.51 | 0.08 | 33 kg | 25.2 n  1242: 1.02 | 0.00 | 23 kg | 167.1 n  1589: 46.27 | 5.38 | 1227 kg | 1.9 n
+  B1_mpc_life     1093: 1.94 | 0.00 | 36 kg | 50.6 n  1242: 2.19 | 0.00 | 0 kg | inf n  1589: 62.78 | 1.13 | 345 kg | 4.9 n
+  B1_mpc_life_or  1093: 0.50 | 0.06 | 37 kg | 21.6 n  1242: 1.00 | 0.00 | 23 kg | 95.7 n  1589: 59.52 | 0.84 | 356 kg | 4.9 n
+
+SO VỚI S1 (không H2):
+  B0_noAging      vượt MBA giảm  28.6% | chi phí +41.9%
+  S3_wZ1e10       vượt MBA giảm  18.6% | chi phí  -4.6%
+  B2_rule         vượt MBA giảm  18.2% | chi phí +17.4%
+  B1_mpc          vượt MBA giảm  22.1% | chi phí  +3.1%
+  B1_mpc_oracle   vượt MBA giảm  31.4% | chi phí  -6.9%
+  B1_mpc_life     vượt MBA giảm   4.4% | chi phí  +3.7%
+  B1_mpc_life_or  vượt MBA giảm  13.5% | chi phí  -3.9%
+
+SO VỚI C* (có H2, LP): C* = 581,403 CNY (nới lỏng LP: khoảng cách dưới đây là CẬN TRÊN)
+  B0_noAging       chi phí   1,008,627 | cách C*:  73.5%
+  S3_wZ1e10        chi phí     678,245 | cách C*:  16.7%
+  B2_rule          chi phí     834,654 | cách C*:  43.6%
+  B1_mpc           chi phí     733,004 | cách C*:  26.1%
+  B1_mpc_oracle    chi phí     661,632 | cách C*:  13.8%
+  B1_mpc_life      chi phí     737,041 | cách C*:  26.8%
+  B1_mpc_life_or   chi phí     683,312 | cách C*:  17.5%
+
+######################################################################################################################
+[C2] Định lý 1 – hình và bảng   ← results/theorem1_2022-11-01_7d_wz1e10/summary.txt
+######################################################################################################################
+VIỆC 2.5 – ĐỊNH LÝ 1 – 7 ngày từ 2022-11-01, w_Z = 1e10
+C* (MILP, cplex): nằm trong [154,433 ; 155,366] CNY (gap bộ giải 0.60%) | bản LP cũ: 154,290 CNY (+0.09% so với cận dưới MILP)
+
+     V   chi phí CNY       cách C* (%)  vượt MBA  H2 dùng  Z_max FC  max Z thực  tuổi thọ FC  tuổi thọ FC  lệch bồn  lệch pin  lý thuyết
+                          [thấp ; cao]       MWh       kg(xấu nhất)  (xấu nhất)  bảo đảm (n)  thực tế (n)     TB/cỡ     TB/cỡ
+   0.1       208,625     [34.3 ; 35.1]     20.35       22     0.010    4.30e-04         4.95          4.7     0.017     0.025  ĐẠT hết
+  0.25       197,085     [26.9 ; 27.6]     18.79       55     0.011    4.29e-04         4.94          5.3     0.057     0.044  ĐẠT hết
+   0.5       186,584     [20.1 ; 20.8]     17.13       97     0.013    4.32e-04         4.93          5.3     0.099     0.079  ĐẠT hết
+     1       167,167       [7.6 ; 8.2]     12.87      256     0.017    4.32e-04         4.92          5.9     0.228     0.148  ĐẠT hết
+
+Đọc bảng:
+  • Chi phí giảm đều khi V tăng: từ 208,625 (V=0.1) xuống 167,167 (V=1) CNY → khoảng cách tới C* từ 35.1% xuống 8.2% (cận cao). Đúng chiều của Định lý 1 (số hạng (A+ε)/V).
+  • Cái giá: Z_max (xấu nhất) tăng từ 0.010 lên 0.017 → tuổi thọ FC BẢO ĐẢM (Hệ quả 1) giảm từ 4.95 xuống 4.92 năm; bồn/pin lệch khỏi θ nhiều hơn (dùng kho tích cực hơn).
+  • Hằng số của Định lý 1 rất lỏng (đã nói trong file lý thuyết) nên hình dùng KHOẢNG CÁCH ĐO ĐƯỢC, không vẽ đường cận A/V.
+  • 'max Z thực' nhỏ hơn Z_max nhiều bậc: bảo đảm tuổi thọ là cho trường hợp xấu nhất; thực tế còn rất xa giới hạn.
+  • Tuổi thọ 'thực tế' là ngoại suy theo tốc độ già của kỳ chạy ngắn (chứa cả phần Z/T) – chỉ để tham khảo.
+
+######################################################################################################################
+[D] H2 so với pin lớn hơn – 30 ngày, không bán H2   ← results/battery_compare_2022-11-01_30d_wz1e10/summary.txt
+######################################################################################################################
+VIỆC 2.6 – H2 SO VỚI PIN LỚN HƠN – 30 ngày từ 2022-11-01
+Pin hiện có ở 3 trạm H2: 1890 kWh. H2 ở 3 trạm: FC 450 kW, EL 450 kW, bồn 270 kg.
+
+kịch bản      pin thêm kWh  vượt MBA MWh  giảm so S1   chi phí CNY    so S1  FC thấp nhất
+S1                       0         73.36        0.0%       710,879     0.0%             —
+S3 (H2)                  0         59.68       18.6%       678,245    -4.6%         6.6 n
+pin ×1.5               945         65.93       10.1%       675,928    -4.9%             —
+pin ×2                1890         59.18       19.3%       644,621    -9.3%             —
+pin ×3                3780         46.71       36.3%       586,393   -17.5%             —
+pin ×5                7560         24.34       66.8%       479,702   -32.5%             —
+pin ×7               11340         11.92       83.8%       421,279   -40.7%             —
+
+PIN HÒA VỐN: cần thêm ≈ 1,820 kWh pin (pin × 1.96) để giảm vượt tải bằng H2 (18.6%).
+
+SO VỐN ĐẦU TƯ (H2 rẻ hơn ⇔ vốn H2 < pin hòa vốn × giá pin):
+                                      thấp         cơ sở           cao
+vốn H2 (FC+EL+bồn), CNY          3,060,000     5,740,200     9,350,100
+giá pin, CNY/kWh                       540           627         1,000
+pin cùng vốn H2, kWh                 5,667         9,155         9,350
+vốn pin hòa vốn, CNY               982,800     1,141,140     1,820,000
+  (cột 'thấp' = giá H2 thấp & pin thấp; muốn xét trường hợp xấu nhất cho H2: vốn H2 cao so với pin thấp)
+  Trường hợp tốt nhất cho H2: vốn H2 thấp 3,060,000 so với pin đắt 1,820,000 CNY → pin vẫn rẻ hơn
+  Trường hợp xấu nhất cho H2: vốn H2 cao 9,350,100 so với pin rẻ 982,800 CNY → pin rẻ hơn
+
+GÓC NHÌN 2 – TRẠM ĐÃ CÓ EL + BỒN (để bán H2 cho FCEV), CHỈ XÉT KHOẢN ĐẦU TƯ THÊM FC để đỡ lưới:
+vốn FC thêm, CNY                 1,125,000     1,690,200     2,510,100
+vốn pin hòa vốn, CNY               982,800     1,141,140     1,820,000
+  → FC chỉ cạnh tranh được với pin khi trạm đã có EL + bồn cho việc bán H2; so cùng cột giá.
+
+TIẾT KIỆM VẬN HÀNH MỖI NĂM so với S1 (quy đổi từ 30 ngày): H2 (S3) 397,047 CNY/năm | pin×1.5 425,237 | pin×2 806,139 | pin×3 1,514,580 | pin×5 2,812,654 | pin×7 3,523,467
+HOÀN VỐN ĐƠN GIẢN (năm, giá cơ sở): H2 toàn bộ 14.5 | chỉ FC 4.3 | pin×1.5 1.4 | pin×2 1.5 | pin×3 1.6 | pin×5 1.7 | pin×7 2.0
+  (hoàn vốn = vốn / tiết kiệm mỗi năm; chưa chiết khấu, chưa tính thay stack – chỉ để so tương đối)
+
+NGUỒN GIÁ: FC – Sino-Synergy IPO (5.578 CNY/kW 2022; 3.756 CNY/kW 5 tháng đầu 2023), dự báo Frost & Sullivan 2.500 CNY/kW (2025);
+  EL – pv magazine 3/2024: hệ kiềm TQ ≈ $303/kW (2021), PEM phương Tây ≈ €1.400/kW; giá PEM TQ cơ sở 6.000 CNY/kW là GIẢ ĐỊNH;
+  pin – CNESA qua EnergyTrend 6/2024: hệ lưu trữ 2 giờ TB 0,627 CNY/Wh (thấp nhất 0,54); bồn+máy nén: GIẢ ĐỊNH, xác minh ở việc 4.4.
+  H2 mua ngoài: bán lẻ TQ 2024 ≈ 35 CNY/kg (trạm Sany tự sản xuất) đến ≈ 75 CNY/kg (thông thường); Quảng Đông đặt mục tiêu < 30 CNY/kg năm 2025.
+LƯU Ý: so vốn ban đầu, chưa tính tuổi thọ khác nhau (stack FC thay sau ~5 năm, pin LFP ~10 năm) – nếu tính hằng năm, H2 còn bất lợi hơn.
+
+######################################################################################################################
+[E] Lưới 33 nút (6 tháng + quét c_v 30 ngày) và bán H2 cho FCEV   ← results/overnight_summary_wz1e10.txt
+######################################################################################################################
+TÓM TẮT CHẠY QUA ĐÊM – xong sau 0 phút
+
+######## grid33_6thang_wz1e10
+VIỆC 3.3–3.4 – LƯỚI IEEE 33 NÚT – bộ 6thang_wz1e10 | phụ tải nền × 0.55, trạm sạc × 0.35, cosφ = 0.98
+Kiểm chứng bộ giải trào lưu: sai số điện áp so với pandapower ở tải danh định = 3.2e-09 pu; lúc nặng nhất của S1 (2022-09-28 21:25:00): V_min tự giải 0.9142 so với pandapower 0.9142
+Vị trí trạm: 1589→nút 17, 1242→nút 32, 1093→nút 24, 1214→nút 21, 1061→nút 8, 1087→nút 13, 1229→nút 29
+
+kịch bản                   V thấp nhất  giờ có nút <0,95  nút·giờ <0,95  giờ <0,93  thiếu áp ∑ tải dây max giờ quá tải dây  tổn thất MWh  đỉnh nguồn MW
+                                  (pu)                                                  (pu·h)         (%)                                             
+Không H2 (S1)                   0.9142            2176.2         9842.9       60.2       58.49         535          3549.1         218.6           3.51
+Đề xuất (S3)                    0.9189            2193.0         9676.1       28.5       55.11         534          3638.5         219.8           3.51
+Không H2, có tính lưới          0.9142            2001.5         9485.8       97.9       59.96         522          3537.0         218.6           3.51
+Đề xuất, có tính lưới           0.9142            1968.1         9023.8       57.8       54.05         522          3604.8         218.3           3.51
+Lyapunov không lão hóa          0.9202            2255.4        10330.1       33.1       61.38         451          3786.5         223.3           3.43
+Quy tắc                         0.9195            2000.6         9448.8       30.5       54.99         483          3284.4         221.8           3.47
+MPC lịch sử                     0.9143            2111.2         8902.0       25.0       49.69         581          3417.8         220.4           3.54
+MPC biết trước                  0.9198            2069.6         8981.3       11.1       50.48         567          3425.8         219.1           3.51
+MPC lịch sử + tuổi thọ          0.9142            1999.8         8453.2       31.5       47.60         581          3158.5         216.7           3.54
+MPC biết trước + tuổi thọ       0.9198            1991.4         8597.8       24.2       48.51         567          3221.3         215.8           3.51
+
+SO VỚI KHÔNG H2 (S1):
+  Đề xuất (S3)               giờ thiếu áp giảm  -0.8% | thiếu áp ∑ giảm   5.8% | giờ quá tải dây giảm  -2.5% | tổn thất giảm  -0.5%
+  Không H2, có tính lưới     giờ thiếu áp giảm   8.0% | thiếu áp ∑ giảm  -2.5% | giờ quá tải dây giảm   0.3% | tổn thất giảm   0.0%
+  Đề xuất, có tính lưới      giờ thiếu áp giảm   9.6% | thiếu áp ∑ giảm   7.6% | giờ quá tải dây giảm  -1.6% | tổn thất giảm   0.1%
+  Lyapunov không lão hóa     giờ thiếu áp giảm  -3.6% | thiếu áp ∑ giảm  -4.9% | giờ quá tải dây giảm  -6.7% | tổn thất giảm  -2.1%
+  Quy tắc                    giờ thiếu áp giảm   8.1% | thiếu áp ∑ giảm   6.0% | giờ quá tải dây giảm   7.5% | tổn thất giảm  -1.4%
+  MPC lịch sử                giờ thiếu áp giảm   3.0% | thiếu áp ∑ giảm  15.1% | giờ quá tải dây giảm   3.7% | tổn thất giảm  -0.8%
+  MPC biết trước             giờ thiếu áp giảm   4.9% | thiếu áp ∑ giảm  13.7% | giờ quá tải dây giảm   3.5% | tổn thất giảm  -0.2%
+  MPC lịch sử + tuổi thọ     giờ thiếu áp giảm   8.1% | thiếu áp ∑ giảm  18.6% | giờ quá tải dây giảm  11.0% | tổn thất giảm   0.9%
+  MPC biết trước + tuổi thọ  giờ thiếu áp giảm   8.5% | thiếu áp ∑ giảm  17.1% | giờ quá tải dây giảm   9.2% | tổn thất giảm   1.3%
+
+Ghi chú: kịch bản tên có "_grid" = bộ điều khiển CÓ tính điện áp lưới (step3 --grid33, LinDistFlow); còn lại chỉ giữ giới hạn MBA từng trạm.
+Đánh giá ở đây là trào lưu AC đầy đủ (chính xác hơn LinDistFlow mà bộ điều khiển dùng).
+
+######## grid33_30ngay_cv_wz1e10
+VIỆC 3.3–3.4 – LƯỚI IEEE 33 NÚT – bộ 30ngay_cv_wz1e10 | phụ tải nền × 0.55, trạm sạc × 0.35, cosφ = 0.98
+Kiểm chứng bộ giải trào lưu: sai số điện áp so với pandapower ở tải danh định = 3.2e-09 pu; lúc nặng nhất của S1 (2022-11-15 23:00:00): V_min tự giải 0.9174 so với pandapower 0.9174
+Vị trí trạm: 1589→nút 17, 1242→nút 32, 1093→nút 24, 1214→nút 21, 1061→nút 8, 1087→nút 13, 1229→nút 29
+
+kịch bản                   V thấp nhất  giờ có nút <0,95  nút·giờ <0,95  giờ <0,93  thiếu áp ∑ tải dây max giờ quá tải dây  tổn thất MWh  đỉnh nguồn MW
+                                  (pu)                                                  (pu·h)         (%)                                             
+Không H2 (S1)                   0.9174             406.9         1772.9       10.9       10.52         535           634.9          37.4           3.49
+Đề xuất (S3)                    0.9209             408.8         1760.8        4.1       10.17         469           649.1          37.8           3.45
+Không H2, có tính lưới          0.9190             372.3         1711.6       19.4       10.96         469           638.2          37.5           3.45
+Đề xuất, có tính lưới           0.9209             369.2         1658.0        9.4        9.88         468           643.7          37.4           3.42
+S3_grid_cv3e4                   0.9203             383.8         1648.0        7.6        9.46         468           637.4          37.3           3.41
+S3_grid_cv3e5                   0.9189             348.1         1638.0       24.2       10.67         469           644.2          37.5           3.38
+
+SO VỚI KHÔNG H2 (S1):
+  Đề xuất (S3)               giờ thiếu áp giảm  -0.5% | thiếu áp ∑ giảm   3.3% | giờ quá tải dây giảm  -2.2% | tổn thất giảm  -1.0%
+  Không H2, có tính lưới     giờ thiếu áp giảm   8.5% | thiếu áp ∑ giảm  -4.2% | giờ quá tải dây giảm  -0.5% | tổn thất giảm  -0.0%
+  Đề xuất, có tính lưới      giờ thiếu áp giảm   9.3% | thiếu áp ∑ giảm   6.0% | giờ quá tải dây giảm  -1.4% | tổn thất giảm   0.1%
+  S3_grid_cv3e4              giờ thiếu áp giảm   5.7% | thiếu áp ∑ giảm  10.1% | giờ quá tải dây giảm  -0.4% | tổn thất giảm   0.3%
+  S3_grid_cv3e5              giờ thiếu áp giảm  14.5% | thiếu áp ∑ giảm  -1.5% | giờ quá tải dây giảm  -1.5% | tổn thất giảm  -0.0%
+
+Ghi chú: kịch bản tên có "_grid" = bộ điều khiển CÓ tính điện áp lưới (step3 --grid33, LinDistFlow); còn lại chỉ giữ giới hạn MBA từng trạm.
+Đánh giá ở đây là trào lưu AC đầy đủ (chính xác hơn LinDistFlow mà bộ điều khiển dùng).
+
+######## batch_2022-09-01_181d_grid_S1
+  K2 – chi phí (gồm giá lão hóa): 4,020,332 CNY | trên mỗi kWh sạc: 0.7646 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 428.00 MWh (8.14% điện sạc), 1654.5 giờ có vượt; tải MBA lớn nhất 178% định mức
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 2722.2 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0806 pu², phạt 7,334,265 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## batch_2022-09-01_181d_grid_S3_wZ1e10
+  K2 – chi phí (gồm giá lão hóa): 3,971,852 CNY | trên mỗi kWh sạc: 0.7554 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 397.35 MWh (7.56% điện sạc), 1583.7 giờ có vượt; tải MBA lớn nhất 176% định mức
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 11.5 năm, EL 23.3 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 7.7 năm, EL 20.4 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 6.8 năm, EL 14.8 năm (mục tiêu 5 năm)
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 2717.3 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0806 pu², phạt 7,076,761 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## batch_2022-11-01_30d_grid_cv3e4_S3_wz1e10
+  K2 – chi phí (gồm giá lão hóa): 702,716 CNY | trên mỗi kWh sạc: 0.8034 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 67.33 MWh (7.70% điện sạc), 274.2 giờ có vượt; tải MBA lớn nhất 167% định mức
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 10.0 năm, EL 29.6 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 7.0 năm, EL 53.0 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 7.8 năm, EL 15.2 năm (mục tiêu 5 năm)
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 522.9 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0702 pu², phạt 402,679 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## batch_2022-11-01_30d_grid_cv1e5_S3_wz1e10
+  K2 – chi phí (gồm giá lão hóa): 733,879 CNY | trên mỗi kWh sạc: 0.8391 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 73.08 MWh (8.36% điện sạc), 296.3 giờ có vượt; tải MBA lớn nhất 167% định mức
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 9.5 năm, EL 25.4 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 6.9 năm, EL 38.7 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 7.3 năm, EL 17.5 năm (mục tiêu 5 năm)
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 500.8 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0691 pu², phạt 1,320,921 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## batch_2022-11-01_30d_grid_cv3e5_S3_wz1e10
+  K2 – chi phí (gồm giá lão hóa): 776,603 CNY | trên mỗi kWh sạc: 0.8879 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 81.11 MWh (9.27% điện sạc), 321.2 giờ có vượt; tải MBA lớn nhất 174% định mức
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 8.4 năm, EL 31.0 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 6.3 năm, EL 28.5 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 6.0 năm, EL 19.7 năm (mục tiêu 5 năm)
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 489.6 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0725 pu², phạt 3,908,514 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## H2 so với pin – nhu cầu 1.0, H2 ngoài 40 CNY/kg
+VIỆC 2.6 – H2 SO VỚI PIN LỚN HƠN – 30 ngày từ 2022-11-01 | CÓ BÁN H2 CHO FCEV (nhu cầu 1.0 × sản lượng EL, H2 ngoài 40 CNY/kg; S1 và pin phải MUA NGOÀI toàn bộ H2)
+Pin hiện có ở 3 trạm H2: 1890 kWh. H2 ở 3 trạm: FC 450 kW, EL 450 kW, bồn 270 kg.
+
+kịch bản      pin thêm kWh  vượt MBA MWh  giảm so S1   chi phí CNY    so S1  FC thấp nhất
+S1                       0         73.36        0.0%       955,879     0.0%             —
+S3 (H2)                  0         61.95       15.6%       923,628    -3.4%         6.6 n
+pin ×1.5               945         65.93       10.1%       920,928    -3.7%             —
+pin ×2                1890         59.18       19.3%       889,621    -6.9%             —
+pin ×3                3780         46.71       36.3%       831,393   -13.0%             —
+pin ×5                7560         24.34       66.8%       724,702   -24.2%             —
+pin ×7               11340         11.92       83.8%       666,279   -30.3%             —
+
+PIN HÒA VỐN: cần thêm ≈ 1,502 kWh pin (pin × 1.79) để giảm vượt tải bằng H2 (15.6%).
+
+SO VỐN ĐẦU TƯ (H2 rẻ hơn ⇔ vốn H2 < pin hòa vốn × giá pin):
+                                      thấp         cơ sở           cao
+vốn H2 (FC+EL+bồn), CNY          3,060,000     5,740,200     9,350,100
+giá pin, CNY/kWh                       540           627         1,000
+pin cùng vốn H2, kWh                 5,667         9,155         9,350
+vốn pin hòa vốn, CNY               811,188       941,879     1,502,200
+  (cột 'thấp' = giá H2 thấp & pin thấp; muốn xét trường hợp xấu nhất cho H2: vốn H2 cao so với pin thấp)
+  Trường hợp tốt nhất cho H2: vốn H2 thấp 3,060,000 so với pin đắt 1,502,200 CNY → pin vẫn rẻ hơn
+  Trường hợp xấu nhất cho H2: vốn H2 cao 9,350,100 so với pin rẻ 811,188 CNY → pin rẻ hơn
+
+GÓC NHÌN 2 – TRẠM ĐÃ CÓ EL + BỒN (để bán H2 cho FCEV), CHỈ XÉT KHOẢN ĐẦU TƯ THÊM FC để đỡ lưới:
+vốn FC thêm, CNY                 1,125,000     1,690,200     2,510,100
+vốn pin hòa vốn, CNY               811,188       941,879     1,502,200
+  → FC chỉ cạnh tranh được với pin khi trạm đã có EL + bồn cho việc bán H2; so cùng cột giá.
+
+TIẾT KIỆM VẬN HÀNH MỖI NĂM so với S1 (quy đổi từ 30 ngày): H2 (S3) 392,387 CNY/năm | pin×1.5 425,237 | pin×2 806,139 | pin×3 1,514,580 | pin×5 2,812,654 | pin×7 3,523,467
+HOÀN VỐN ĐƠN GIẢN (năm, giá cơ sở): H2 toàn bộ 14.6 | chỉ FC 4.3 | pin×1.5 1.4 | pin×2 1.5 | pin×3 1.6 | pin×5 1.7 | pin×7 2.0
+  (hoàn vốn = vốn / tiết kiệm mỗi năm; chưa chiết khấu, chưa tính thay stack – chỉ để so tương đối)
+
+NGUỒN GIÁ: FC – Sino-Synergy IPO (5.578 CNY/kW 2022; 3.756 CNY/kW 5 tháng đầu 2023), dự báo Frost & Sullivan 2.500 CNY/kW (2025);
+  EL – pv magazine 3/2024: hệ kiềm TQ ≈ $303/kW (2021), PEM phương Tây ≈ €1.400/kW; giá PEM TQ cơ sở 6.000 CNY/kW là GIẢ ĐỊNH;
+  pin – CNESA qua EnergyTrend 6/2024: hệ lưu trữ 2 giờ TB 0,627 CNY/Wh (thấp nhất 0,54); bồn+máy nén: GIẢ ĐỊNH, xác minh ở việc 4.4.
+  H2 mua ngoài: bán lẻ TQ 2024 ≈ 35 CNY/kg (trạm Sany tự sản xuất) đến ≈ 75 CNY/kg (thông thường); Quảng Đông đặt mục tiêu < 30 CNY/kg năm 2025.
+LƯU Ý: so vốn ban đầu, chưa tính tuổi thọ khác nhau (stack FC thay sau ~5 năm, pin LFP ~10 năm) – nếu tính hằng năm, H2 còn bất lợi hơn.
+
+######## H2 so với pin – nhu cầu 1.0, H2 ngoài 60 CNY/kg
+VIỆC 2.6 – H2 SO VỚI PIN LỚN HƠN – 30 ngày từ 2022-11-01 | CÓ BÁN H2 CHO FCEV (nhu cầu 1.0 × sản lượng EL, H2 ngoài 60 CNY/kg; S1 và pin phải MUA NGOÀI toàn bộ H2)
+Pin hiện có ở 3 trạm H2: 1890 kWh. H2 ở 3 trạm: FC 450 kW, EL 450 kW, bồn 270 kg.
+
+kịch bản      pin thêm kWh  vượt MBA MWh  giảm so S1   chi phí CNY    so S1  FC thấp nhất
+S1                       0         73.36        0.0%     1,078,379     0.0%             —
+S3 (H2)                  0         62.85       14.3%     1,019,807    -5.4%         6.6 n
+pin ×1.5               945         65.93       10.1%     1,043,428    -3.2%             —
+pin ×2                1890         59.18       19.3%     1,012,121    -6.1%             —
+pin ×3                3780         46.71       36.3%       953,893   -11.5%             —
+pin ×5                7560         24.34       66.8%       847,202   -21.4%             —
+pin ×7               11340         11.92       83.8%       788,779   -26.9%             —
+
+PIN HÒA VỐN: cần thêm ≈ 1,376 kWh pin (pin × 1.73) để giảm vượt tải bằng H2 (14.3%).
+
+SO VỐN ĐẦU TƯ (H2 rẻ hơn ⇔ vốn H2 < pin hòa vốn × giá pin):
+                                      thấp         cơ sở           cao
+vốn H2 (FC+EL+bồn), CNY          3,060,000     5,740,200     9,350,100
+giá pin, CNY/kWh                       540           627         1,000
+pin cùng vốn H2, kWh                 5,667         9,155         9,350
+vốn pin hòa vốn, CNY               743,148       862,877     1,376,200
+  (cột 'thấp' = giá H2 thấp & pin thấp; muốn xét trường hợp xấu nhất cho H2: vốn H2 cao so với pin thấp)
+  Trường hợp tốt nhất cho H2: vốn H2 thấp 3,060,000 so với pin đắt 1,376,200 CNY → pin vẫn rẻ hơn
+  Trường hợp xấu nhất cho H2: vốn H2 cao 9,350,100 so với pin rẻ 743,148 CNY → pin rẻ hơn
+
+GÓC NHÌN 2 – TRẠM ĐÃ CÓ EL + BỒN (để bán H2 cho FCEV), CHỈ XÉT KHOẢN ĐẦU TƯ THÊM FC để đỡ lưới:
+vốn FC thêm, CNY                 1,125,000     1,690,200     2,510,100
+vốn pin hòa vốn, CNY               743,148       862,877     1,376,200
+  → FC chỉ cạnh tranh được với pin khi trạm đã có EL + bồn cho việc bán H2; so cùng cột giá.
+
+TIẾT KIỆM VẬN HÀNH MỖI NĂM so với S1 (quy đổi từ 30 ngày): H2 (S3) 712,626 CNY/năm | pin×1.5 425,237 | pin×2 806,139 | pin×3 1,514,580 | pin×5 2,812,654 | pin×7 3,523,467
+HOÀN VỐN ĐƠN GIẢN (năm, giá cơ sở): H2 toàn bộ 8.1 | chỉ FC 2.4 | pin×1.5 1.4 | pin×2 1.5 | pin×3 1.6 | pin×5 1.7 | pin×7 2.0
+  (hoàn vốn = vốn / tiết kiệm mỗi năm; chưa chiết khấu, chưa tính thay stack – chỉ để so tương đối)
+
+NGUỒN GIÁ: FC – Sino-Synergy IPO (5.578 CNY/kW 2022; 3.756 CNY/kW 5 tháng đầu 2023), dự báo Frost & Sullivan 2.500 CNY/kW (2025);
+  EL – pv magazine 3/2024: hệ kiềm TQ ≈ $303/kW (2021), PEM phương Tây ≈ €1.400/kW; giá PEM TQ cơ sở 6.000 CNY/kW là GIẢ ĐỊNH;
+  pin – CNESA qua EnergyTrend 6/2024: hệ lưu trữ 2 giờ TB 0,627 CNY/Wh (thấp nhất 0,54); bồn+máy nén: GIẢ ĐỊNH, xác minh ở việc 4.4.
+  H2 mua ngoài: bán lẻ TQ 2024 ≈ 35 CNY/kg (trạm Sany tự sản xuất) đến ≈ 75 CNY/kg (thông thường); Quảng Đông đặt mục tiêu < 30 CNY/kg năm 2025.
+LƯU Ý: so vốn ban đầu, chưa tính tuổi thọ khác nhau (stack FC thay sau ~5 năm, pin LFP ~10 năm) – nếu tính hằng năm, H2 còn bất lợi hơn.
+
+######## H2 so với pin – nhu cầu 0.5, H2 ngoài 60 CNY/kg
+VIỆC 2.6 – H2 SO VỚI PIN LỚN HƠN – 30 ngày từ 2022-11-01 | CÓ BÁN H2 CHO FCEV (nhu cầu 0.5 × sản lượng EL, H2 ngoài 60 CNY/kg; S1 và pin phải MUA NGOÀI toàn bộ H2)
+Pin hiện có ở 3 trạm H2: 1890 kWh. H2 ở 3 trạm: FC 450 kW, EL 450 kW, bồn 270 kg.
+
+kịch bản      pin thêm kWh  vượt MBA MWh  giảm so S1   chi phí CNY    so S1  FC thấp nhất
+S1                       0         73.36        0.0%       894,179     0.0%             —
+S3 (H2)                  0         62.48       14.8%       842,751    -5.8%         6.6 n
+pin ×1.5               945         65.93       10.1%       859,228    -3.9%             —
+pin ×2                1890         59.18       19.3%       827,921    -7.4%             —
+pin ×3                3780         46.71       36.3%       769,693   -13.9%             —
+pin ×5                7560         24.34       66.8%       663,002   -25.9%             —
+pin ×7               11340         11.92       83.8%       604,579   -32.4%             —
+
+PIN HÒA VỐN: cần thêm ≈ 1,428 kWh pin (pin × 1.76) để giảm vượt tải bằng H2 (14.8%).
+
+SO VỐN ĐẦU TƯ (H2 rẻ hơn ⇔ vốn H2 < pin hòa vốn × giá pin):
+                                      thấp         cơ sở           cao
+vốn H2 (FC+EL+bồn), CNY          3,060,000     5,740,200     9,350,100
+giá pin, CNY/kWh                       540           627         1,000
+pin cùng vốn H2, kWh                 5,667         9,155         9,350
+vốn pin hòa vốn, CNY               771,120       895,356     1,428,000
+  (cột 'thấp' = giá H2 thấp & pin thấp; muốn xét trường hợp xấu nhất cho H2: vốn H2 cao so với pin thấp)
+  Trường hợp tốt nhất cho H2: vốn H2 thấp 3,060,000 so với pin đắt 1,428,000 CNY → pin vẫn rẻ hơn
+  Trường hợp xấu nhất cho H2: vốn H2 cao 9,350,100 so với pin rẻ 771,120 CNY → pin rẻ hơn
+
+GÓC NHÌN 2 – TRẠM ĐÃ CÓ EL + BỒN (để bán H2 cho FCEV), CHỈ XÉT KHOẢN ĐẦU TƯ THÊM FC để đỡ lưới:
+vốn FC thêm, CNY                 1,125,000     1,690,200     2,510,100
+vốn pin hòa vốn, CNY               771,120       895,356     1,428,000
+  → FC chỉ cạnh tranh được với pin khi trạm đã có EL + bồn cho việc bán H2; so cùng cột giá.
+
+TIẾT KIỆM VẬN HÀNH MỖI NĂM so với S1 (quy đổi từ 30 ngày): H2 (S3) 625,707 CNY/năm | pin×1.5 425,237 | pin×2 806,139 | pin×3 1,514,580 | pin×5 2,812,654 | pin×7 3,523,467
+HOÀN VỐN ĐƠN GIẢN (năm, giá cơ sở): H2 toàn bộ 9.2 | chỉ FC 2.7 | pin×1.5 1.4 | pin×2 1.5 | pin×3 1.6 | pin×5 1.7 | pin×7 2.0
+  (hoàn vốn = vốn / tiết kiệm mỗi năm; chưa chiết khấu, chưa tính thay stack – chỉ để so tương đối)
+
+NGUỒN GIÁ: FC – Sino-Synergy IPO (5.578 CNY/kW 2022; 3.756 CNY/kW 5 tháng đầu 2023), dự báo Frost & Sullivan 2.500 CNY/kW (2025);
+  EL – pv magazine 3/2024: hệ kiềm TQ ≈ $303/kW (2021), PEM phương Tây ≈ €1.400/kW; giá PEM TQ cơ sở 6.000 CNY/kW là GIẢ ĐỊNH;
+  pin – CNESA qua EnergyTrend 6/2024: hệ lưu trữ 2 giờ TB 0,627 CNY/Wh (thấp nhất 0,54); bồn+máy nén: GIẢ ĐỊNH, xác minh ở việc 4.4.
+  H2 mua ngoài: bán lẻ TQ 2024 ≈ 35 CNY/kg (trạm Sany tự sản xuất) đến ≈ 75 CNY/kg (thông thường); Quảng Đông đặt mục tiêu < 30 CNY/kg năm 2025.
+LƯU Ý: so vốn ban đầu, chưa tính tuổi thọ khác nhau (stack FC thay sau ~5 năm, pin LFP ~10 năm) – nếu tính hằng năm, H2 còn bất lợi hơn.
+
+######################################################################################################################
+[F] Volt–var (6 tháng)   ← results/voltvar_summary_wz1e10.txt
+######################################################################################################################
+VIỆC 3.5 – VOLT–VAR – xong sau 0 phút
+
+######## grid33_6thang_vv_wz1e10
+VIỆC 3.3–3.4 – LƯỚI IEEE 33 NÚT – bộ 6thang_vv_wz1e10 | phụ tải nền × 0.55, trạm sạc × 0.35, cosφ = 0.98
+Kiểm chứng bộ giải trào lưu: sai số điện áp so với pandapower ở tải danh định = 3.2e-09 pu; lúc nặng nhất của S1 (2022-09-28 21:25:00): V_min tự giải 0.9142 so với pandapower 0.9142
+Vị trí trạm: 1589→nút 17, 1242→nút 32, 1093→nút 24, 1214→nút 21, 1061→nút 8, 1087→nút 13, 1229→nút 29
+
+kịch bản                   V thấp nhất  giờ có nút <0,95  nút·giờ <0,95  giờ <0,93  thiếu áp ∑ tải dây max giờ quá tải dây  tổn thất MWh  đỉnh nguồn MW
+                                  (pu)                                                  (pu·h)         (%)                                             
+Không H2 (S1)                   0.9142            2176.2         9842.9       60.2       58.49         535          3549.1         218.6           3.51
+Đề xuất (S3)                    0.9189            2193.0         9676.1       28.5       55.11         534          3638.5         219.8           3.51
+Không H2, có tính lưới          0.9142            2001.5         9485.8       97.9       59.96         522          3537.0         218.6           3.51
+Đề xuất, có tính lưới           0.9142            1968.1         9023.8       57.8       54.05         522          3604.8         218.3           3.51
+Không H2, lưới + volt–var       0.9220             980.1         4106.8        7.4       19.76         506          3615.2         199.7           3.50
+Đề xuất, lưới + volt–var        0.9224             910.2         3663.7        2.9       15.94         506          3699.6         199.3           3.49
+Lyapunov không lão hóa          0.9202            2255.4        10330.1       33.1       61.38         451          3786.5         223.3           3.43
+Quy tắc                         0.9195            2000.6         9448.8       30.5       54.99         483          3284.4         221.8           3.47
+MPC lịch sử                     0.9143            2111.2         8902.0       25.0       49.69         581          3417.8         220.4           3.54
+MPC biết trước                  0.9198            2069.6         8981.3       11.1       50.48         567          3425.8         219.1           3.51
+MPC lịch sử + tuổi thọ          0.9142            1999.8         8453.2       31.5       47.60         581          3158.5         216.7           3.54
+MPC biết trước + tuổi thọ       0.9198            1991.4         8597.8       24.2       48.51         567          3221.3         215.8           3.51
+
+SO VỚI KHÔNG H2 (S1):
+  Đề xuất (S3)               giờ thiếu áp giảm  -0.8% | thiếu áp ∑ giảm   5.8% | giờ quá tải dây giảm  -2.5% | tổn thất giảm  -0.5%
+  Không H2, có tính lưới     giờ thiếu áp giảm   8.0% | thiếu áp ∑ giảm  -2.5% | giờ quá tải dây giảm   0.3% | tổn thất giảm   0.0%
+  Đề xuất, có tính lưới      giờ thiếu áp giảm   9.6% | thiếu áp ∑ giảm   7.6% | giờ quá tải dây giảm  -1.6% | tổn thất giảm   0.1%
+  Không H2, lưới + volt–var  giờ thiếu áp giảm  55.0% | thiếu áp ∑ giảm  66.2% | giờ quá tải dây giảm  -1.9% | tổn thất giảm   8.7%
+  Đề xuất, lưới + volt–var   giờ thiếu áp giảm  58.2% | thiếu áp ∑ giảm  72.7% | giờ quá tải dây giảm  -4.2% | tổn thất giảm   8.8%
+  Lyapunov không lão hóa     giờ thiếu áp giảm  -3.6% | thiếu áp ∑ giảm  -4.9% | giờ quá tải dây giảm  -6.7% | tổn thất giảm  -2.1%
+  Quy tắc                    giờ thiếu áp giảm   8.1% | thiếu áp ∑ giảm   6.0% | giờ quá tải dây giảm   7.5% | tổn thất giảm  -1.4%
+  MPC lịch sử                giờ thiếu áp giảm   3.0% | thiếu áp ∑ giảm  15.1% | giờ quá tải dây giảm   3.7% | tổn thất giảm  -0.8%
+  MPC biết trước             giờ thiếu áp giảm   4.9% | thiếu áp ∑ giảm  13.7% | giờ quá tải dây giảm   3.5% | tổn thất giảm  -0.2%
+  MPC lịch sử + tuổi thọ     giờ thiếu áp giảm   8.1% | thiếu áp ∑ giảm  18.6% | giờ quá tải dây giảm  11.0% | tổn thất giảm   0.9%
+  MPC biết trước + tuổi thọ  giờ thiếu áp giảm   8.5% | thiếu áp ∑ giảm  17.1% | giờ quá tải dây giảm   9.2% | tổn thất giảm   1.3%
+
+Ghi chú: kịch bản tên có "_grid" = bộ điều khiển CÓ tính điện áp lưới (step3 --grid33, LinDistFlow); còn lại chỉ giữ giới hạn MBA từng trạm.
+Đánh giá ở đây là trào lưu AC đầy đủ (chính xác hơn LinDistFlow mà bộ điều khiển dùng).
+
+######## batch_2022-09-01_181d_grid_S1
+  K2 – chi phí (gồm giá lão hóa): 4,020,332 CNY | trên mỗi kWh sạc: 0.7646 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 428.00 MWh (8.14% điện sạc), 1654.5 giờ có vượt; tải MBA lớn nhất 178% định mức
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 2722.2 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0806 pu², phạt 7,334,265 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## batch_2022-09-01_181d_grid_S3_wZ1e10
+  K2 – chi phí (gồm giá lão hóa): 3,971,852 CNY | trên mỗi kWh sạc: 0.7554 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 397.35 MWh (7.56% điện sạc), 1583.7 giờ có vượt; tải MBA lớn nhất 176% định mức
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 11.5 năm, EL 23.3 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 7.7 năm, EL 20.4 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 6.8 năm, EL 14.8 năm (mục tiêu 5 năm)
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 2717.3 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0806 pu², phạt 7,076,761 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## batch_2022-09-01_181d_vv_S1
+ĐIỀU KHIỂN CÓ TÍNH LƯỚI 33 NÚT (LinDistFlow): trạm sạc × 0.35, phụ tải nền × 0.55, v_min điều khiển = 0.960 pu, phạt 100000 CNY/(pu²·h) → chi phí biên điện áp lớn nhất 5.64 CNY/kWh (đã cộng vào c̄) | VOLT–VAR: bộ biến đổi pin + FC phát/hút Q, S = 1.1×P định mức, chi phí Q 0.005 CNY/kvarh, FC phát Q cả khi tắt (STATCOM), |Q qua MBA| ≤ tanφ·P_MBA
+  K2 – chi phí (gồm giá lão hóa): 4,078,160 CNY | trên mỗi kWh sạc: 0.7756 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 436.71 MWh (8.31% điện sạc), 1653.2 giờ có vượt; tải MBA lớn nhất 193% định mức
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 2129.2 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0665 pu², phạt 3,803,799 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######## batch_2022-09-01_181d_vv_S3_wZ1e10
+ĐIỀU KHIỂN CÓ TÍNH LƯỚI 33 NÚT (LinDistFlow): trạm sạc × 0.35, phụ tải nền × 0.55, v_min điều khiển = 0.960 pu, phạt 100000 CNY/(pu²·h) → chi phí biên điện áp lớn nhất 5.64 CNY/kWh (đã cộng vào c̄) | VOLT–VAR: bộ biến đổi pin + FC phát/hút Q, S = 1.1×P định mức, chi phí Q 0.005 CNY/kvarh, FC phát Q cả khi tắt (STATCOM), |Q qua MBA| ≤ tanφ·P_MBA
+  K2 – chi phí (gồm giá lão hóa): 4,052,273 CNY | trên mỗi kWh sạc: 0.7707 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 405.68 MWh (7.72% điện sạc), 1587.5 giờ có vượt; tải MBA lớn nhất 186% định mức
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 10.9 năm, EL 24.3 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 7.6 năm, EL 18.5 năm (mục tiêu 5 năm)
+           K7 – tuổi thọ dự kiến theo tốc độ kỳ này: FC 6.6 năm, EL 13.3 năm (mục tiêu 5 năm)
+  K11 – ĐIỆN ÁP (LinDistFlow, trong bộ điều khiển): 2094.2 giờ dự báo thiếu áp (< v_min điều khiển), thiếu áp lớn nhất 0.0659 pu², phạt 3,529,664 CNY (KHÔNG gồm trong K2) – đánh giá AC thật bằng grid33_eval.py
+  lý thuyết: ĐẠT hết
+
+######################################################################################################################
+[G] Sai lệch mô hình M1–M9 (30 ngày) + M1 6 tháng   ← results/mismatch_summary_wz1e10.txt
+######################################################################################################################
+VIỆC 4.2 – SAI LỆCH MÔ HÌNH – 30 ngày từ 2022-11-01 (S3, w_Z = 1e10, V = 1) – xong sau 41 phút
+
+=== 30 NGÀY
+             chi phí CNY  so lý tưởng  e^M FC  e^M EL cách đáy kg cách đỉnh kg FC ≥ năm  lý thuyết  | kịch bản
+Lý tưởng         678,245        0.00%    0.0%    0.0%       15.42         1.35      6.6  ĐẠT hết    | máy thật = mô hình bộ điều khiển (kết quả cũ)
+M1               677,854       -0.06%    0.6%    0.7%       15.28         1.35      6.6  ĐẠT hết    | đường trơn thật; bộ điều khiển dùng các điểm hiệu chỉnh, cập nhật mỗi ngày
+M2               684,918        0.98%    1.2%    1.0%       16.38         1.35      6.6  ĐẠT hết    | bộ điều khiển chỉ 2 đoạn
+M3               684,306        0.89%    3.9%    2.7%       15.54         1.35      6.6  ĐẠT hết    | bộ điều khiển chỉ 1 đoạn (hiệu suất gần như hằng số)
+M4               685,059        1.00%    6.3%    4.8%       14.12         1.35      6.6  ĐẠT hết    | máy đã già nửa đời, bộ điều khiển vẫn dùng đường máy mới
+M5               686,982        1.29%    0.8%    0.7%       14.54         1.35      6.6  ĐẠT hết    | máy đã già nửa đời, bộ điều khiển cập nhật theo lão hóa đo được
+M6               690,902        1.87%    7.9%   10.0%       14.28         1.35      6.6  ĐẠT hết    | lệch +10%: FC tốn hơn, EL ra ít hơn (dồn bồn về đáy)
+M7               665,706       -1.85%    9.6%    9.1%       17.96         1.36      6.6  ĐẠT hết    | lệch −10%: FC tốn ít hơn, EL ra nhiều hơn (dồn bồn lên đỉnh)
+M8               689,923        1.72%   10.0%   10.0%       15.20         1.35      6.6  ĐẠT hết    | như M6 nhưng KHÔNG nới chặn m_max (đối chứng)
+M9               666,537       -1.73%   10.0%   10.0%       18.19         1.35      6.6  ĐẠT hết    | như M7 nhưng KHÔNG nới chặn m_max (đối chứng)
+
+=== 6 THÁNG
+             chi phí CNY  so lý tưởng  e^M FC  e^M EL cách đáy kg cách đỉnh kg FC ≥ năm  lý thuyết  | kịch bản
+Lý tưởng 6T    3,601,872        0.00%    0.0%    0.0%       12.02         1.35      7.3  ĐẠT hết    | 6 tháng, kết quả cũ
+M1 6T          3,604,126        0.06%    0.6%    0.7%       12.39         1.35      7.3  ĐẠT hết    | 6 tháng, như M1
+
+Cột: e^M = sai số khối lượng H2 lớn nhất mỗi bước giữa bộ điều khiển và máy thật (% của m_max, lấy trạm lớn nhất);
+cách đáy/đỉnh = khoảng cách nhỏ nhất của bồn tới giới hạn trên mọi trạm (phải ≥ 0, Mệnh đề 1 ý 2); FC ≥ năm = tuổi thọ dự kiến FC thấp nhất.
+
+######## M1 (batch_2022-11-01_30d_mm_M1_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +0% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: daily; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật daily, D ban đầu 0, độ lệch +0%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0039 / EL 0.0010 kg/bước (= 0.6% / 0.7% của m_max) | H2 FC dùng thật 44.6 so với dự đoán 44.9 kg (-0.7%), EL làm ra thật 38.7 so với 38.7 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 15.282 kg, tới đỉnh 1.347 kg
+         trạm 1242: e^M đo được FC 0.0035 / EL 0.0005 kg/bước (= 0.5% / 0.3% của m_max) | H2 FC dùng thật 27.9 so với dự đoán 28.1 kg (-0.5%), EL làm ra thật 21.5 so với 21.5 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 33.314 kg, tới đỉnh 1.347 kg
+         trạm 1589: e^M đo được FC 0.0086 / EL 0.0028 kg/bước (= 0.5% / 0.7% của m_max) | H2 FC dùng thật 879.8 so với dự đoán 882.5 kg (-0.3%), EL làm ra thật 792.5 so với 792.3 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 22.472 kg, tới đỉnh 3.368 kg
+
+######## M2 (batch_2022-11-01_30d_mm_M2_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +0% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển 2 đoạn đều, cập nhật theo lão hóa: daily; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển 2 đoạn, cập nhật daily, D ban đầu 0, độ lệch +0%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0078 / EL 0.0012 kg/bước (= 1.2% / 0.8% của m_max) | H2 FC dùng thật 46.6 so với dự đoán 47.4 kg (-1.7%), EL làm ra thật 36.5 so với 36.5 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 16.380 kg, tới đỉnh 1.347 kg
+         trạm 1242: e^M đo được FC 0.0078 / EL 0.0002 kg/bước (= 1.2% / 0.1% của m_max) | H2 FC dùng thật 27.9 so với dự đoán 28.2 kg (-1.1%), EL làm ra thật 17.5 so với 17.5 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 32.154 kg, tới đỉnh 1.347 kg
+         trạm 1589: e^M đo được FC 0.0195 / EL 0.0037 kg/bước (= 1.2% / 1.0% của m_max) | H2 FC dùng thật 695.1 so với dự đoán 707.3 kg (-1.7%), EL làm ra thật 628.6 so với 628.4 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 23.051 kg, tới đỉnh 3.368 kg
+
+######## M3 (batch_2022-11-01_30d_mm_M3_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +0% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển 1 đoạn đều, cập nhật theo lão hóa: daily; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển 1 đoạn, cập nhật daily, D ban đầu 0, độ lệch +0%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0197 / EL 0.0000 kg/bước (= 3.1% / 0.0% của m_max) | H2 FC dùng thật 45.7 so với dự đoán 47.6 kg (-4.0%), EL làm ra thật 35.6 so với 35.6 kg (-0.0%) | khoảng cách nhỏ nhất tới đáy bồn 15.540 kg, tới đỉnh 1.347 kg
+         trạm 1242: e^M đo được FC 0.0245 / EL 0.0040 kg/bước (= 3.9% / 2.7% của m_max) | H2 FC dùng thật 27.7 so với dự đoán 28.6 kg (-3.1%), EL làm ra thật 20.6 so với 20.5 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 32.752 kg, tới đỉnh 1.347 kg
+         trạm 1589: e^M đo được FC 0.0468 / EL 0.0102 kg/bước (= 2.9% / 2.7% của m_max) | H2 FC dùng thật 699.1 so với dự đoán 730.2 kg (-4.2%), EL làm ra thật 626.9 so với 626.7 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 21.420 kg, tới đỉnh 3.368 kg
+
+######## M4 (batch_2022-11-01_30d_mm_M4_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +0% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0.5; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: none; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật none, D ban đầu 0.5, độ lệch +0%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0395 / EL 0.0073 kg/bước (= 6.2% / 4.8% của m_max) | H2 FC dùng thật 46.6 so với dự đoán 44.3 kg (+5.4%), EL làm ra thật 37.1 so với 39.0 kg (-4.8%) | khoảng cách nhỏ nhất tới đáy bồn 14.117 kg, tới đỉnh 1.347 kg
+         trạm 1242: e^M đo được FC 0.0399 / EL 0.0073 kg/bước (= 6.3% / 4.8% của m_max) | H2 FC dùng thật 28.0 so với dự đoán 26.5 kg (+5.9%), EL làm ra thật 18.0 so với 18.9 kg (-4.8%) | khoảng cách nhỏ nhất tới đáy bồn 31.845 kg, tới đỉnh 1.347 kg
+         trạm 1589: e^M đo được FC 0.0568 / EL 0.0183 kg/bước (= 3.6% / 4.8% của m_max) | H2 FC dùng thật 827.5 so với dự đoán 782.8 kg (+5.7%), EL làm ra thật 736.8 so với 773.9 kg (-4.8%) | khoảng cách nhỏ nhất tới đáy bồn 22.491 kg, tới đỉnh 3.368 kg
+
+######## M5 (batch_2022-11-01_30d_mm_M5_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +0% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0.5; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: daily; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật daily, D ban đầu 0.5, độ lệch +0%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0052 / EL 0.0010 kg/bước (= 0.8% / 0.6% của m_max) | H2 FC dùng thật 47.3 so với dự đoán 47.7 kg (-0.9%), EL làm ra thật 37.0 so với 37.0 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 14.540 kg, tới đỉnh 1.347 kg
+         trạm 1242: e^M đo được FC 0.0046 / EL 0.0001 kg/bước (= 0.7% / 0.0% của m_max) | H2 FC dùng thật 28.2 so với dự đoán 28.4 kg (-0.6%), EL làm ra thật 17.4 so với 17.4 kg (-0.0%) | khoảng cách nhỏ nhất tới đáy bồn 32.650 kg, tới đỉnh 1.347 kg
+         trạm 1589: e^M đo được FC 0.0114 / EL 0.0027 kg/bước (= 0.7% / 0.7% của m_max) | H2 FC dùng thật 742.5 so với dự đoán 743.7 kg (-0.2%), EL làm ra thật 650.0 so với 649.8 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 22.647 kg, tới đỉnh 3.368 kg
+
+######## M6 (batch_2022-11-01_30d_mm_M6_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +10% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: daily; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật daily, D ban đầu 0, độ lệch +10%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 7.9% / 10.0% của m_max) | H2 FC dùng thật 48.6 so với dự đoán 44.5 kg (+9.2%), EL làm ra thật 42.1 so với 46.7 kg (-10.0%) | khoảng cách nhỏ nhất tới đáy bồn 14.278 kg, tới đỉnh 1.346 kg
+         trạm 1242: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 7.9% / 10.0% của m_max) | H2 FC dùng thật 29.7 so với dự đoán 27.2 kg (+9.4%), EL làm ra thật 22.8 so với 25.3 kg (-10.0%) | khoảng cách nhỏ nhất tới đáy bồn 32.221 kg, tới đỉnh 1.346 kg
+         trạm 1589: e^M đo được FC 0.0964 / EL 0.0379 kg/bước (= 5.5% / 10.0% của m_max) | H2 FC dùng thật 779.5 so với dự đoán 710.9 kg (+9.7%), EL làm ra thật 686.2 so với 762.4 kg (-10.0%) | khoảng cách nhỏ nhất tới đáy bồn 22.094 kg, tới đỉnh 3.364 kg
+
+######## M7 (batch_2022-11-01_30d_mm_M7_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm -10% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: daily; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật daily, D ban đầu 0, độ lệch -10%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 9.6% / 9.1% của m_max) | H2 FC dùng thật 43.6 so với dự đoán 48.8 kg (-10.7%), EL làm ra thật 38.0 so với 34.6 kg (+10.0%) | khoảng cách nhỏ nhất tới đáy bồn 17.964 kg, tới đỉnh 1.364 kg
+         trạm 1242: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 9.6% / 9.1% của m_max) | H2 FC dùng thật 26.2 so với dự đoán 29.3 kg (-10.5%), EL làm ra thật 20.1 so với 18.3 kg (+10.0%) | khoảng cách nhỏ nhất tới đáy bồn 33.986 kg, tới đỉnh 1.364 kg
+         trạm 1589: e^M đo được FC 0.1137 / EL 0.0379 kg/bước (= 7.9% / 9.1% của m_max) | H2 FC dùng thật 860.8 so với dự đoán 959.1 kg (-10.2%), EL làm ra thật 794.1 so với 721.8 kg (+10.0%) | khoảng cách nhỏ nhất tới đáy bồn 23.162 kg, tới đỉnh 3.409 kg
+
+######## M8 (batch_2022-11-01_30d_mm_M8_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +10% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: daily; chặn m_max: chỉ theo bộ điều khiển (KHÔNG an toàn – để đối chứng)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật daily, D ban đầu 0, độ lệch +10%, chặn m_max danh định
+         trạm 1093: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 10.0% / 10.0% của m_max) | H2 FC dùng thật 43.2 so với dự đoán 39.5 kg (+9.2%), EL làm ra thật 33.8 so với 37.6 kg (-10.0%) | khoảng cách nhỏ nhất tới đáy bồn 15.202 kg, tới đỉnh 1.349 kg
+         trạm 1242: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 10.0% / 10.0% của m_max) | H2 FC dùng thật 28.7 so với dự đoán 26.3 kg (+9.5%), EL làm ra thật 21.9 so với 24.4 kg (-10.0%) | khoảng cách nhỏ nhất tới đáy bồn 30.364 kg, tới đỉnh 1.349 kg
+         trạm 1589: e^M đo được FC 0.0964 / EL 0.0379 kg/bước (= 7.0% / 10.0% của m_max) | H2 FC dùng thật 796.6 so với dự đoán 725.6 kg (+9.8%), EL làm ra thật 702.8 so với 780.8 kg (-10.0%) | khoảng cách nhỏ nhất tới đáy bồn 22.249 kg, tới đỉnh 3.373 kg
+
+######## M9 (batch_2022-11-01_30d_mm_M9_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm -10% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: daily; chặn m_max: chỉ theo bộ điều khiển (KHÔNG an toàn – để đối chứng)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật daily, D ban đầu 0, độ lệch -10%, chặn m_max danh định
+         trạm 1093: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 10.0% / 10.0% của m_max) | H2 FC dùng thật 42.7 so với dự đoán 47.8 kg (-10.7%), EL làm ra thật 33.1 so với 30.1 kg (+10.0%) | khoảng cách nhỏ nhất tới đáy bồn 18.189 kg, tới đỉnh 1.349 kg
+         trạm 1242: e^M đo được FC 0.0549 / EL 0.0152 kg/bước (= 10.0% / 10.0% của m_max) | H2 FC dùng thật 25.4 so với dự đoán 28.4 kg (-10.5%), EL làm ra thật 19.0 so với 17.3 kg (+10.0%) | khoảng cách nhỏ nhất tới đáy bồn 32.211 kg, tới đỉnh 1.349 kg
+         trạm 1589: e^M đo được FC 0.1137 / EL 0.0379 kg/bước (= 8.3% / 10.0% của m_max) | H2 FC dùng thật 854.8 so với dự đoán 952.6 kg (-10.3%), EL làm ra thật 787.6 so với 715.9 kg (+10.0%) | khoảng cách nhỏ nhất tới đáy bồn 23.167 kg, tới đỉnh 3.373 kg
+
+######## M1 6T (batch_2022-09-01_181d_mm_M1_wz1e10)
+SAI LỆCH MÔ HÌNH (việc 4.2): nhà máy = đường trơn PCHIP tại D thật (bảng D: có), độ lệch thêm +0% (dương: FC tốn hơn, EL ra ít hơn; âm: ngược lại); D ban đầu 0; bộ điều khiển các điểm hiệu chỉnh, cập nhật theo lão hóa: daily; chặn m_max: GIÁ TRỊ LỚN HƠN giữa hai mô hình (mục 1b)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K12 – SAI LỆCH MÔ HÌNH (việc 4.2): bộ điều khiển các điểm hiệu chỉnh, cập nhật daily, D ban đầu 0, độ lệch +0%, chặn m_max an toàn
+         trạm 1093: e^M đo được FC 0.0040 / EL 0.0011 kg/bước (= 0.6% / 0.7% của m_max) | H2 FC dùng thật 158.1 so với dự đoán 159.3 kg (-0.7%), EL làm ra thật 153.1 so với 153.1 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 16.147 kg, tới đỉnh 1.347 kg
+         trạm 1242: e^M đo được FC 0.0035 / EL 0.0011 kg/bước (= 0.6% / 0.7% của m_max) | H2 FC dùng thật 265.3 so với dự đoán 267.2 kg (-0.7%), EL làm ra thật 260.0 so với 260.0 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 12.386 kg, tới đỉnh 1.347 kg
+         trạm 1589: e^M đo được FC 0.0089 / EL 0.0028 kg/bước (= 0.6% / 0.7% của m_max) | H2 FC dùng thật 4006.9 so với dự đoán 4023.0 kg (-0.4%), EL làm ra thật 3944.4 so với 3944.1 kg (+0.0%) | khoảng cách nhỏ nhất tới đáy bồn 22.627 kg, tới đỉnh 3.368 kg
+
+######################################################################################################################
+[H] ADMM phân tán (7 ngày)   ← results/admm_summary_wz1e10.txt
+######################################################################################################################
+VIỆC 3.1–3.2 – ADMM – 7 ngày từ 2022-11-01 (S3, w_Z = 1e10, V = 1) – xong sau 47 phút
+
+               chi phí CNY so tập trung hội tụ % vòng TB    ε TB ε/|J*| %  s/bước FC ≥ năm  lý thuyết
+Tập trung          169,151        0.00%      nan     nan     nan      nan    0.02      5.9  ĐẠT hết
+k=3, ρ=1e-3        170,948        1.06%     13.0     2.8   2.337    2.713    0.12      5.9  ĐẠT hết
+k=10, ρ=1e-3       170,670        0.90%     40.8     7.6   0.808    0.931    0.39      5.9  ĐẠT hết
+k=30, ρ=1e-3       169,610        0.27%     88.8    13.0   0.461    0.531    0.69      5.9  ĐẠT hết
+k=30, ρ=3e-4       169,210        0.03%     82.4    14.9   0.292    0.335    0.82      5.9  ĐẠT hết
+k=30, ρ=3e-3       170,555        0.83%     95.2     8.4   1.372    1.578    0.45      5.9  ĐẠT hết
+
+Cột: hội tụ % = số bước ADMM đạt lệch chia sẻ ≤ 2 kW trước khi hết vòng; ε = J(ũ) − min P3 đo mỗi bước (đơn vị của J);
+s/bước = thời gian ADMM khi 7 trạm giải chung trên laptop (song song thật thì chia khoảng 7).
+
+######## k=3, ρ=1e-3 (batch_2022-11-01_7d_admm_k3_r1e-3_wz1e10)
+K8 – ADMM: hội tụ (lệch chia sẻ ≤ 2 kW) ở 13.0% số bước; số vòng TB 2.8, trung vị 3, max 3; thời gian ADMM TB 0.12 s/bước (cả 7 trạm giải chung; song song thì ≈ 0.02 s/bước)
+     sai số tối ưu đo được ε_t = J(ũ) − min P3: TB 2.337, trung vị 1.021, max 80.71 (đơn vị J) | so với |J*| TB 86.14: 2.713% | ε = 0 (đúng tối ưu) ở 12.5% số bước | sửa lệch phải nới thêm: chia_se 949 bước, pin 1 bước, cong_suat 0 bước, tap_trung 0 bước
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.006e+04  → ĐẠT
+  K6 – lưới: vượt giới hạn MBA 12.85 MWh (6.35% điện sạc), 54.5 giờ có vượt; tải MBA lớn nhất 167% định mức
+
+######## k=10, ρ=1e-3 (batch_2022-11-01_7d_admm_k10_r1e-3_wz1e10)
+K8 – ADMM: hội tụ (lệch chia sẻ ≤ 2 kW) ở 40.8% số bước; số vòng TB 7.6, trung vị 10, max 10; thời gian ADMM TB 0.39 s/bước (cả 7 trạm giải chung; song song thì ≈ 0.06 s/bước)
+     sai số tối ưu đo được ε_t = J(ũ) − min P3: TB 0.808, trung vị 0.279, max 32.03 (đơn vị J) | so với |J*| TB 86.81: 0.931% | ε = 0 (đúng tối ưu) ở 24.3% số bước | sửa lệch phải nới thêm: chia_se 846 bước, pin 1 bước, cong_suat 0 bước, tap_trung 0 bước
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.098e+04  → ĐẠT
+  K6 – lưới: vượt giới hạn MBA 13.49 MWh (6.66% điện sạc), 57.8 giờ có vượt; tải MBA lớn nhất 180% định mức
+
+######## k=30, ρ=1e-3 (batch_2022-11-01_7d_admm_k30_r1e-3_wz1e10)
+K8 – ADMM: hội tụ (lệch chia sẻ ≤ 2 kW) ở 88.8% số bước; số vòng TB 13.0, trung vị 13, max 30; thời gian ADMM TB 0.69 s/bước (cả 7 trạm giải chung; song song thì ≈ 0.10 s/bước)
+     sai số tối ưu đo được ε_t = J(ũ) − min P3: TB 0.4608, trung vị 0.1572, max 9.532 (đơn vị J) | so với |J*| TB 86.75: 0.531% | ε = 0 (đúng tối ưu) ở 29.5% số bước | sửa lệch phải nới thêm: chia_se 773 bước, pin 1 bước, cong_suat 0 bước, tap_trung 0 bước
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.098e+04  → ĐẠT
+  K6 – lưới: vượt giới hạn MBA 13.44 MWh (6.64% điện sạc), 58.2 giờ có vượt; tải MBA lớn nhất 167% định mức
+
+######## k=30, ρ=3e-4 (batch_2022-11-01_7d_admm_k30_r3e-4_wz1e10)
+K8 – ADMM: hội tụ (lệch chia sẻ ≤ 2 kW) ở 82.4% số bước; số vòng TB 14.9, trung vị 15, max 30; thời gian ADMM TB 0.82 s/bước (cả 7 trạm giải chung; song song thì ≈ 0.12 s/bước)
+     sai số tối ưu đo được ε_t = J(ũ) − min P3: TB 0.2916, trung vị 0.09417, max 8.248 (đơn vị J) | so với |J*| TB 86.96: 0.335% | ε = 0 (đúng tối ưu) ở 35.2% số bước | sửa lệch phải nới thêm: chia_se 768 bước, pin 1 bước, cong_suat 0 bước, tap_trung 0 bước
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.098e+04  → ĐẠT
+  K6 – lưới: vượt giới hạn MBA 13.44 MWh (6.64% điện sạc), 58.5 giờ có vượt; tải MBA lớn nhất 167% định mức
+
+######## k=30, ρ=3e-3 (batch_2022-11-01_7d_admm_k30_r3e-3_wz1e10)
+K8 – ADMM: hội tụ (lệch chia sẻ ≤ 2 kW) ở 95.2% số bước; số vòng TB 8.4, trung vị 5, max 30; thời gian ADMM TB 0.45 s/bước (cả 7 trạm giải chung; song song thì ≈ 0.06 s/bước)
+     sai số tối ưu đo được ε_t = J(ũ) − min P3: TB 1.372, trung vị 0.903, max 18.43 (đơn vị J) | so với |J*| TB 86.95: 1.578% | ε = 0 (đúng tối ưu) ở 8.9% số bước | sửa lệch phải nới thêm: chia_se 719 bước, pin 1 bước, cong_suat 0 bước, tap_trung 0 bước
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -2.098e+04  → ĐẠT
+  K6 – lưới: vượt giới hạn MBA 13.37 MWh (6.60% điện sạc), 55.2 giờ có vượt; tải MBA lớn nhất 256% định mức
+
+######################################################################################################################
+[I] Mở rộng 20/35/50 điểm sạc   ← results/scale_summary_wz1e10.txt
+######################################################################################################################
+VIỆC 4.3 – MỞ RỘNG MẠNG – 30 ngày từ 2022-11-01 (ADMM: 2 ngày) – xong sau 52 phút
+
+   N  giải s/bước TB    max   chi phí S3   so S1  vượt MBA S3   so S1  FC ≥ năm  lý thuyết S3
+  20           0.030   0.13    1,940,521   -1.0%         58.8  -15.4%       6.5  ĐẠT hết
+  35           0.051   0.23    3,351,821   -2.3%        167.3  -15.5%       6.6  ĐẠT hết
+  50           0.072   0.31    5,850,697   -2.7%        294.9  -18.8%       6.6  ĐẠT hết
+
+ADMM (2 ngày, tối đa 30 vòng, ρ = 1e-3, mỗi điểm chia sẻ với 3 điểm gần nhất):
+   N  chi phí so tập trung  hội tụ %  vòng TB  ε/|J*| %  s/bước song song  lý thuyết
+  20                -0.64%      86.1     13.4     0.377              0.05  ĐẠT hết
+  35                 0.99%      80.0     14.9     0.372              0.06  ĐẠT hết
+  50                 2.09%      75.3     17.2     0.325              0.07  ĐẠT hết
+
+So với 7 trạm thật (đã có): giải tập trung ~0,02 s/bước; S3 so S1 30 ngày: chi phí −5,0%, vượt MBA −20,8%.
+Lưu ý: mỗi điểm sạc của mạng lớn là một VÙNG giao thông (gộp nhiều trạm) – dữ liệu 5 phút đã làm sạch của UrbanEV (Dryad, zone-cleaned-aggregated);
+dùng để kiểm khả năng mở rộng, không thay kết quả chính trên 7 trạm thật.
+
+######## N = 20, S3
+MẠNG KHÁC (việc 4.3): dữ liệu scale20_inputs.csv, thông số params_scale20.json, 20 điểm sạc, chia sẻ chỉ với 3 điểm gần nhất
+Thời gian giải: TB 0.030 s/bước, max 0.127 s (bước thật dài 300 s)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -4.142e+04  → ĐẠT
+  K2 – chi phí (gồm giá lão hóa): 1,936,280 CNY | trên mỗi kWh sạc: 0.5823 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 58.77 MWh (1.77% điện sạc), 346.2 giờ có vượt; tải MBA lớn nhất 167% định mức
+
+######## N = 35, S3
+MẠNG KHÁC (việc 4.3): dữ liệu scale35_inputs.csv, thông số params_scale35.json, 35 điểm sạc, chia sẻ chỉ với 3 điểm gần nhất
+Thời gian giải: TB 0.051 s/bước, max 0.230 s (bước thật dài 300 s)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -6.821e+04  → ĐẠT
+  K2 – chi phí (gồm giá lão hóa): 3,344,566 CNY | trên mỗi kWh sạc: 0.6679 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 167.29 MWh (3.34% điện sạc), 376.5 giờ có vượt; tải MBA lớn nhất 167% định mức
+
+######## N = 50, S3
+MẠNG KHÁC (việc 4.3): dữ liệu scale50_inputs.csv, thông số params_scale50.json, 50 điểm sạc, chia sẻ chỉ với 3 điểm gần nhất
+Thời gian giải: TB 0.072 s/bước, max 0.311 s (bước thật dài 300 s)
+  Bổ đề 1 (L_t+1 − L_t ≤ A + ...): vi phạm lớn nhất = -1.039e+05  → ĐẠT
+  K2 – chi phí (gồm giá lão hóa): 5,835,916 CNY | trên mỗi kWh sạc: 0.7811 CNY/kWh
+  K6 – lưới: vượt giới hạn MBA 294.94 MWh (3.95% điện sạc), 416.3 giờ có vượt; tải MBA lớn nhất 167% định mức
+
+######################################################################################################################
+[J] Độ nhạy giả định (giá thiết bị, chia sẻ, pin, MBA, PV)   ← results/sens44_summary_wz1e10.txt
+######################################################################################################################
+VIỆC 4.4 – ĐỘ NHẠY THÔNG SỐ GIẢ ĐỊNH – S3 w_Z = 1e10 – 30 ngày từ 2022-11-01 – xong sau 39 phút
+
+thông số                  giá trị   chi phí S3  so S3 gốc  S3 so S1  vượt MBA so S1  FC ≥ năm  lý thuyết
+(cấu hình gốc)                         679,847      0.00%     -4.4%          -18.6%       6.6  ĐẠT hết
+điện máy nén kWh/kg           2,0      680,538      0.10%     -4.3%          -18.1%       6.6  ĐẠT hết
+điện máy nén kWh/kg           3,2      679,104     -0.11%     -4.5%          -19.0%       6.6  ĐẠT hết
+giá stack FC                × 0,6      680,884      0.15%     -4.3%          -15.9%       6.3  ĐẠT hết
+giá stack FC                × 1,3      685,232      0.79%     -3.7%          -16.8%       6.6  ĐẠT hết
+giá stack EL                × 0,3      675,179     -0.69%     -5.1%          -18.0%       6.6  ĐẠT hết
+giới hạn chia sẻ kW           150      682,094      0.33%     -4.7%          -19.2%       6.6  ĐẠT hết
+giới hạn chia sẻ kW           600      678,801     -0.15%     -4.6%          -19.2%       6.6  ĐẠT hết
+hao mòn pin CNY/kWh          0,02      680,517      0.10%     -4.1%          -17.5%       6.6  ĐẠT hết
+hao mòn pin CNY/kWh          0,10      681,227      0.20%     -4.3%          -17.9%       6.6  ĐẠT hết
+MBA (× đỉnh tải)              0,5      869,937     27.96%     -4.3%          -13.7%       6.6  ĐẠT hết
+MBA (× đỉnh tải)              0,7      527,951    -22.34%     -3.9%          -24.9%       6.6  ĐẠT hết
+MBA (× đỉnh tải)              0,8      419,946    -38.23%     -0.8%          -19.4%       7.5  ĐẠT hết
+quy mô PV                     × 1      759,033     11.65%     -2.3%          -16.8%       6.6  ĐẠT hết
+quy mô PV                     × 3      635,712     -6.49%     -6.3%          -19.1%       6.6  ĐẠT hết
+
+Đọc: kết luận vững nếu cột 'S3 so S1' và 'vượt MBA so S1' giữ dấu âm và FC ≥ 5 năm ở mọi dòng.
+Nguồn khoảng đổi: DOE Hydrogen Program Record #9013; CAST (SMM 11/6/2026); IEA commentary 15/10/2026 (xem đầu file run_sens44.py).
+
+######################################################################################################################
+[K] DRL (PPO) so với đề xuất không chia sẻ   ← results/drl_summary_wz1e10.txt
+######################################################################################################################
+VIỆC 4.1 – DRL (PPO) so với đề xuất – 30 ngày từ 2022-11-01 (PPO học trên 9–10/2022) – xong sau 3 phút
+
+                        chi phí CNY   so S3b  vượt MBA MWh  FC sống ≥ năm  số lần bật FC
+Không H2 (S1)               710,879    -9.6%          73.4            nan            nan
+Đề xuất (S3)                678,245   -13.8%          59.7            6.6             77
+S1b không H2, k. chia sẻ      824,806     4.9%          74.1            nan            nan
+S3b không chia sẻ           786,414     0.0%          60.4            6.6             81
+PPO hạt 0                   924,825    17.6%          94.0            inf              0
+PPO hạt 1                   844,823     7.4%          77.3            inf              0
+PPO hạt 2                   861,670     9.6%          80.4            8.8             16
+PPO trung bình              877,106    11.5%          83.9            inf              5   (độ lệch chuẩn chi phí 34,436)
+
+So công bằng: PPO không có chia sẻ giữa các trạm → so với S3b (đề xuất) và S1b (chỉ pin); S1, S3 (có chia sẻ) để tham khảo.
+Mô hình PPO chọn theo tập kiểm định 25–31/10 (không nhìn tháng 11); đường học trong từng khối cho thấy các mốc PPO có dùng FC.
+Cùng thông số, cùng mô hình H2 và lão hóa, cùng cách tính K2 (đã kiểm: phát lại quyết định của S3b trong môi trường DRL ra đúng chi phí).
+
+######## PPO hạt 0
+DRL (PPO) – hạt giống 0 – 3,000,000 bước huấn luyện (45 phút) – mô hình chọn theo tập kiểm định (tốt nhất ở 750,000 bước) – thử 30 ngày từ 2022-11-01
+  K2 – chi phí (gồm giá lão hóa): 924,825 CNY
+  K6 – vượt giới hạn MBA: 93.96 MWh
+  K7 – tuổi thọ dự kiến FC: 1093: inf năm, 1242: inf năm, 1589: inf năm | EL: 1093: 961.3 năm, 1242: 961.3 năm, 1589: 892.7 năm
+  số lần bật FC: 1093: 0, 1242: 0, 1589: 0 | FC chạy 0.0% thời gian
+  bồn cách đáy nhỏ nhất: 1093: 49.8 kg, 1242: 49.7 kg, 1589: 124.1 kg
+  đường học (bước: kiểm định / thử CNY, FC chạy %, FC sống ≥ năm):
+        250,000:   199,624 /   943,359 |  0.7% |   36.6
+        500,000:   201,680 /   923,540 |  0.1% |  122.6
+        750,000:   190,068 /   924,825 |  0.0% |    inf
+      1,000,000:   190,887 /   908,675 |  0.0% |    inf
+      1,250,000:   190,083 /   891,662 |  0.0% |  203.6
+      1,500,000:   191,817 /   900,367 |  3.3% |    1.3
+      1,750,000:   193,235 /   910,851 |  3.1% |    1.2
+      2,000,000:   192,524 /   908,510 |  2.9% |    1.3
+      2,250,000:   192,517 /   919,803 |  3.1% |    0.9
+      2,500,000:   196,527 /   920,441 |  3.8% |    0.7
+      2,750,000:   196,829 /   931,945 |  4.5% |    0.5
+      3,000,000:   191,626 /   962,008 |  5.4% |    0.4
+  Lưu ý: DRL không có hàng đợi sức khỏe → không có bảo đảm tuổi thọ; không chia sẻ giữa trạm → so với S3b (--no_share).
+
+######## PPO hạt 1
+DRL (PPO) – hạt giống 1 – 3,000,000 bước huấn luyện (44 phút) – mô hình chọn theo tập kiểm định (tốt nhất ở 1,000,000 bước) – thử 30 ngày từ 2022-11-01
+  K2 – chi phí (gồm giá lão hóa): 844,823 CNY
+  K6 – vượt giới hạn MBA: 77.28 MWh
+  K7 – tuổi thọ dự kiến FC: 1093: inf năm, 1242: inf năm, 1589: inf năm | EL: 1093: 892.7 năm, 1242: 871.9 năm, 1589: inf năm
+  số lần bật FC: 1093: 0, 1242: 0, 1589: 0 | FC chạy 0.0% thời gian
+  bồn cách đáy nhỏ nhất: 1093: 49.7 kg, 1242: 49.7 kg, 1589: 124.1 kg
+  đường học (bước: kiểm định / thử CNY, FC chạy %, FC sống ≥ năm):
+        250,000:   182,803 /   860,853 |  0.0% |    inf
+        500,000:   183,310 /   843,344 |  0.5% |   11.9
+        750,000:   182,285 /   851,092 |  0.0% |    inf
+      1,000,000:   180,964 /   844,823 |  0.0% |    inf
+      1,250,000:   182,010 /   845,940 |  0.0% |   67.9
+      1,500,000:   184,723 /   865,861 |  0.0% |    inf
+      1,750,000:   186,437 /   868,648 |  0.0% |   67.9
+      2,000,000:   195,688 /   893,882 |  0.0% |   68.5
+      2,250,000:   186,823 /   872,470 |  0.1% |   25.4
+      2,500,000:   190,117 /   882,620 |  0.0% |   79.5
+      2,750,000:   186,847 /   878,000 |  0.1% |   26.6
+      3,000,000:   184,896 /   866,859 |  0.0% |   50.2
+  Lưu ý: DRL không có hàng đợi sức khỏe → không có bảo đảm tuổi thọ; không chia sẻ giữa trạm → so với S3b (--no_share).
+
+######## PPO hạt 2
+DRL (PPO) – hạt giống 2 – 3,000,000 bước huấn luyện (44 phút) – mô hình chọn theo tập kiểm định (tốt nhất ở 1,500,000 bước) – thử 30 ngày từ 2022-11-01
+  K2 – chi phí (gồm giá lão hóa): 861,670 CNY
+  K6 – vượt giới hạn MBA: 80.38 MWh
+  K7 – tuổi thọ dự kiến FC: 1093: 8.8 năm, 1242: 203.6 năm, 1589: inf năm | EL: 1093: 96.4 năm, 1242: 1013.3 năm, 1589: 421.3 năm
+  số lần bật FC: 1093: 16, 1242: 0, 1589: 0 | FC chạy 0.3% thời gian
+  bồn cách đáy nhỏ nhất: 1093: 35.6 kg, 1242: 49.3 kg, 1589: 124.1 kg
+  đường học (bước: kiểm định / thử CNY, FC chạy %, FC sống ≥ năm):
+        250,000:   197,618 /   941,617 |  0.0% |    inf
+        500,000:   187,782 /   895,165 |  0.0% |    inf
+        750,000:   189,968 / 1,037,471 | 12.5% |    0.2
+      1,000,000:   185,116 /   904,459 |  1.7% |    3.3
+      1,250,000:   186,291 /   892,099 |  0.2% |   18.3
+      1,500,000:   183,969 /   861,670 |  0.3% |    8.8
+      1,750,000:   187,024 /   883,786 |  0.6% |    2.7
+      2,000,000:   191,308 /   893,075 |  0.5% |    2.9
+      2,250,000:   190,678 /   898,112 |  0.3% |    2.6
+      2,500,000:   189,525 /   894,110 |  0.5% |    2.9
+      2,750,000:   193,669 /   888,236 |  0.1% |   13.2
+      3,000,000:   193,600 /   896,203 |  0.4% |    3.5
+  Lưu ý: DRL không có hàng đợi sức khỏe → không có bảo đảm tuổi thọ; không chia sẻ giữa trạm → so với S3b (--no_share).
+
+######################################################################################################################
+[L] Mô phỏng 5 năm (Hệ quả 1–2)   ← results/multiyear/summary.txt
+######################################################################################################################
+MÔ PHỎNG NHIỀU NĂM – 10 đoạn × 6 tháng dữ liệu thật (2022-09 → 2023-02 lặp lại), nhà máy già dần, bộ điều khiển cập nhật mỗi ngày
+Tuổi thọ mục tiêu FC 5 năm → δ = Δt/L; đường cận Mệnh đề 2: D̄(t) = δ·t + Z_max; sàn hiệu suất Hệ quả 2 tại x = 0.45
+
+=== S3 (đề xuất): 10 đoạn = 4.96 năm; chi phí từng năm (CNY, 2 đoạn/năm): 7,214,547, 7,225,003, 7,238,388, 7,255,587, 7,253,553
+  trạm 1093: D_FC thật cuối kỳ 0.289 (D tính 0.289) | max(D tính − đường cận) = -0.0076 → ĐẠT (luôn dưới cận) | hết tuổi thọ (D = 1): chưa, sau 4.96 năm | η_FC(0.45) 0.504 → 0.490, trên sàn Hệ quả 2: ĐẠT
+  trạm 1242: D_FC thật cuối kỳ 0.368 (D tính 0.368) | max(D tính − đường cận) = -0.0075 → ĐẠT (luôn dưới cận) | hết tuổi thọ (D = 1): chưa, sau 4.96 năm | η_FC(0.45) 0.504 → 0.486, trên sàn Hệ quả 2: ĐẠT
+  trạm 1589: D_FC thật cuối kỳ 0.678 (D tính 0.678) | max(D tính − đường cận) = -0.0176 → ĐẠT (luôn dưới cận) | hết tuổi thọ (D = 1): chưa, sau 4.96 năm | η_FC(0.45) 0.504 → 0.471, trên sàn Hệ quả 2: ĐẠT
+  các kiểm tra lý thuyết trong từng đoạn: ĐẠT hết
+
+=== B0 (Lyapunov KHÔNG tính lão hóa): 10 đoạn = 4.96 năm; chi phí từng năm (CNY, 2 đoạn/năm): 11,521,775, 11,508,059, 11,470,615, 11,431,121, 11,401,400
+  trạm 1093: D_FC thật cuối kỳ 22.276 (D tính 22.276) | max(D tính − đường cận) = +21.2764 → VƯỢT cận | hết tuổi thọ (D = 1): năm thứ 0.22 | η_FC(0.45) 0.504 → 0.455, trên sàn Hệ quả 2: KHÔNG
+  trạm 1242: D_FC thật cuối kỳ 21.357 (D tính 21.357) | max(D tính − đường cận) = +20.3570 → VƯỢT cận | hết tuổi thọ (D = 1): năm thứ 0.22 | η_FC(0.45) 0.504 → 0.455, trên sàn Hệ quả 2: KHÔNG
+  trạm 1589: D_FC thật cuối kỳ 26.343 (D tính 26.343) | max(D tính − đường cận) = +25.3329 → VƯỢT cận | hết tuổi thọ (D = 1): năm thứ 0.19 | η_FC(0.45) 0.504 → 0.455, trên sàn Hệ quả 2: KHÔNG
