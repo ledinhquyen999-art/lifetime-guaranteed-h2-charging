@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this code, please cite the paper below."
+message: "If you use this code, please cite the paper below and this software release."
 title: "Lifetime-Guaranteed Online Control of Fast-Charging Stations With a Hydrogen Chain Under Grid-Connection Limits"
 authors:
   - family-names: "Le"
@@ -9,7 +9,15 @@ authors:
     given-names: "Minh Quan"
     affiliation: "University of Science and Technology - The University of Danang; Advanced Institute of Science and Technology - The University of Danang"
     email: "dmquan@dut.udn.vn"
-version: "1.1.0"
+version: "1.1"
+doi: "10.5281/zenodo.23643447"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23643447"
+    description: "This release (v1.1)"
+  - type: doi
+    value: "10.5281/zenodo.23575343"
+    description: "All versions (always resolves to the latest)"
 date-released: "2026-10-25"
 license: MIT
 repository-code: "https://github.com/ledinhquyen999-art/lifetime-guaranteed-h2-charging"

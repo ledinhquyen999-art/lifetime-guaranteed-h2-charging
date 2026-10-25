@@ -4,6 +4,10 @@ Code and parameters for the paper
 
 > D. Q. Le and M. Q. Duong, "Lifetime-guaranteed online control of fast-charging stations with a hydrogen chain under grid-connection limits," submitted to *IEEE Transactions on Smart Grid*, 2026.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23643447.svg)](https://doi.org/10.5281/zenodo.23643447)
+
+Software DOI: this release (v1.1) 10.5281/zenodo.23643447; all versions 10.5281/zenodo.23575343.
+
 Corresponding author: Minh Quan Duong, The University of Danang – University of Science and Technology (dmquan@dut.udn.vn).
 
 The controller is a Lyapunov drift-plus-penalty policy. It runs a fuel cell (FC), an electrolyzer (EL), an H<sub>2</sub> tank and a battery at fast-charging stations whose grid connection is smaller than their peak load. A health queue gives a lifetime guarantee that holds on **every data sequence**, with no forecasts: the stack lasts at least L(1 − Z<sub>max</sub>). The same queue can wrap any other controller, such as a trained DRL policy, as a safety shield.
