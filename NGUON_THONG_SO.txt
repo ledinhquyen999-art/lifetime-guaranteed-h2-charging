@@ -1,0 +1,58 @@
+BẢNG NGUỒN THÔNG SỐ – cấu hình cuối (24/10/2026)
+=================================================
+Loại: [D] lấy từ DỮ LIỆU ĐO | [T] lấy từ TÀI LIỆU (có trích dẫn) | [K] KỊCH BẢN THIẾT KẾ (chọn theo quy tắc + có quét độ nhạy)
+
+DỮ LIỆU
+[D] Phụ tải sạc 5 phút, 7 trạm, 1/9/2022–28/2/2023: UrbanEV (Li et al., Sci. Data 12:523, 2025; Dryad 10.5061/dryad.np5hqc04z).
+    Công suất = số trụ DC bận (đo) × công suất định mức trụ (pile_rated_power.csv) – đúng cách UrbanEV tính 'volume';
+    UrbanEV nói rõ đây là CẬN TRÊN (có bản volume-11kW thay thế). Ghi trong bài: "reconstructed from measured pile occupancy at rated power".
+[D] Giá điện từng trạm (e_price, phần điện năng của giá sạc, 0,27–1,43 CNY/kWh): UrbanEV. Bài coi là giá trạm mua (phần điện được chuyển thẳng).
+[D] Bức xạ, nhiệt độ: Open-Meteo Historical Weather API (tái phân tích ERA5), theo giờ, nội suy 5 phút, giờ Bắc Kinh (UTC+8),
+    1/9/2022–28/2/2023, tọa độ tâm cụm trạm (22,7165° N; 113,8841° E). File đã dùng: weather_5min_processed.csv.
+    Trích: P. Zippenfenig, Open-Meteo.com Weather API (v0.2.69), Zenodo, 2023, doi:10.5281/zenodo.8112599;
+           H. Hersbach et al., "The ERA5 global reanalysis," Q. J. R. Meteorol. Soc. 146 (2020) 1999–2049.
+    Quy đổi (suy ngược từ file, khớp tới 2e-4): bức xạ mặt nghiêng POA từ trực xạ + tán xạ (POA/GHI ≈ 1,16 lúc trưa);
+    P/kWp = 0,86 × POA/1000 × [1 − 0,0038 (T_cell − 25)],  T_cell = T_kk + 0,0314·POA (NOCT ≈ 45 °C).
+    (File weather_pv_5min_shenzhen.csv lấy từ NASA POWER KHÔNG được dùng trong mô phỏng – chênh 1,6% sản lượng.)
+[D] Đường hiệu suất FC (5 điểm, có D): IEEE PHM Data Challenge 2014 (FCLAB) – calibrate_fc_ieee.py.
+[D] Đường kWh/kg EL (4 điểm, có D): Nguyen et al., Mendeley Data 10.17632/93jz2rgy4d – calibrate_el.py.
+
+LÃO HÓA FC  (D = 1 khi điện áp cell giảm 10%, như Pei 2008, Chen 2015, DOE)
+[T] k_ss  = 6,895 µV mỗi lần bật và mỗi lần tắt  ← Chen, Pei & Song, Appl. Energy 142 (2015) 154–163, Bảng 1: 13,79 µV/chu kỳ bật–tắt
+            (= Pei 2008: 0,00196%/chu kỳ). Mô hình tính trọn 13,79 lúc bật (trả trước, Bổ đề 0).
+[T] k_lc  = 0,0042 µV/kW/module  ← cùng bảng: 0,4185 µV mỗi chu kỳ không tải → định mức → không tải; một chu kỳ của module 50 kW
+            có |ΔP| tổng = 2 × 50 kW → 0,4185/100. (Bản cũ 1,79 µV/kW KHÔNG có nguồn – đã bỏ.)
+[T] k_lo  = 8,662 µV/h (chạy < 20% định mức)  ← cùng bảng, chế độ không tải (idling).  Gán "tải thấp = không tải": ghi rõ.
+[T] k_hp  = 10,00 µV/h (> 80% định mức, tăng tuyến tính tới 100%)  ← cùng bảng.
+[T] k_run = 1,7 µV/h (mọi lúc chạy)  ← 10% sau 40 000 h = 0,25%/1000 h: DOE Program Record 20001 (2020), mục tiêu 2030 pin nhiên liệu
+            nhiệt độ thấp chạy chu kỳ hằng ngày; nằm giữa mục tiêu DOE FC tĩnh dân dụng (0,3%/1000 h) và thương mại (80 000 h).
+            Các mục tiêu DOE đã gồm cả bật/tắt → cộng thêm k_ss là THIÊN AN TOÀN.
+    ĐỘ NHẠY: k_run = 8,5 µV/h (= 10% sau 8 000 h, mục tiêu cuối DOE cho FC ô tô, Record 20005); FC_KP = 1,72 (hệ số đường thật k của Chen 2015).
+[D] Điện áp cell định mức 0,683 V (hiệu chỉnh PHM).
+[T] Giá thay stack FC 2 000 CNY/kW ≈ 55–65% giá hệ FC Trung Quốc 2023–2026 (3 000–3 756 CNY/kW: hồ sơ IPO Sino-Synergy; CAST 6/2026). Độ nhạy ×0,6–1,3.
+
+LÃO HÓA EL
+[T] a0 = 4,8 µV/h  ← DOE, PEM electrolysis technical targets: hiện trạng 2022 4,8 mV/1000 h (0,25%/1000 h), hết tuổi thọ khi sụt 10%.
+[T] a_sd = 11,6 µV mỗi lần tắt  ← Rakousky et al., J. Power Sources 342 (2017) 38–47, Bảng 2 (ĐÃ XÁC NHẬN với bài gốc):
+            cell D (2↔0 A/cm², 6 h mỗi nấc, ≈83 lần tắt) 16 µV/h; cell E (2↔0 A/cm², 10 phút mỗi nấc, ≈3000 lần tắt) 50 µV/h;
+            cùng 1000 h, cùng thời gian ở 2 A/cm² → (50−16)×1000/(3000−83) = 11,6 µV mỗi lần tắt.
+[T] Giá thay stack EL 3 150 CNY/kW: trong khoảng 384–1 071 €/kW của stack PEM 2020 (Krishnan et al., IJHE 48(83) 32313–32330, 2023), phía thấp.
+[D] Điện áp cell EL 1,82 V (hiệu chỉnh Mendeley).
+
+THIẾT BỊ KHÁC
+[T] Máy nén 2,5 kWh/kg (DOE Hydrogen Program Record 9013); độ nhạy 2,0–3,2.
+[T] LHV H2 33,33 kWh/kg.
+[T] Pin LFP: hiệu suất sạc/xả 0,95/0,95, SOC 10–90%, hao mòn 0,05 CNY/kWh thông lượng (LFP ≈ 600 CNY/kWh / 6000 chu kỳ). Độ nhạy 0,02–0,10.
+    Pin KHÔNG có mô hình già theo dung lượng (6 tháng) – ghi giới hạn.
+
+KỊCH BẢN THIẾT KẾ  (bảy trạm này ngoài đời KHÔNG có H2 – bài hỏi "nếu có thì vận hành thế nào")
+[K] Giới hạn đấu nối P_tr = 0,6 × đỉnh phụ tải 5 phút dựng lại của trạm trong kỳ dữ liệu (đúng như code). Cơ sở: kho tại trạm cho phép giảm 50–80% công suất
+    lưới cần đấu nối (DOE/NREL Joint Office help sheet, 2024). Độ nhạy 0,5 / 0,7 / 0,8 (0,8 ≈ trường hợp sạc thật chỉ 75% định mức).
+[K] Phạt vượt giới hạn c_ov = 5 CNY/kWh (giả định). Độ nhạy 2, 3, 10 CNY/kWh trong run_extra.py: H2 hòa vốn ở khoảng 3 CNY/kWh.
+[K] PV = 1 × phụ tải trung bình của trạm (cấu hình chính, mới); độ nhạy 2×, 3×.
+[K] Pin lưu trữ: 2 giờ × phụ tải trung bình (cùng tỉ lệ cho cả 7 trạm).
+[K] Chuỗi H2 ở 3 trạm lớn: FC = EL = 100/100/250 kW, bồn 60/60/150 kg; độ nhạy cỡ H2 ×2, ×3 (h2_scale, run_extra.py) và "pin lớn hơn thay H2" (run_battery_compare.py).
+[K] Chia sẻ điện giữa trạm ≤ 300 kW/cặp qua lưới, không phí (như Yan & Chen 2023); độ nhạy 150, 600.
+[K] Tuổi thọ mục tiêu 5 năm lịch; vùng đệm θ_Z = 0,02; w_Z = 1e10 (theo công thức chọn w_Z); V = 1.
+
+ĐÃ ĐỦ NGUỒN cho mọi thông số loại [D] và [T].

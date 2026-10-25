@@ -1,0 +1,10 @@
+numpy>=1.26
+pandas>=2.1
+scipy>=1.11
+matplotlib>=3.8
+pyomo>=6.7
+highspy>=1.7
+pandapower>=2.14
+stable-baselines3>=2.3
+gymnasium>=0.29
+torch>=2.2

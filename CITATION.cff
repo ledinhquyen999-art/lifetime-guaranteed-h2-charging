@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper below."
+title: "Lifetime-Guaranteed Online Control of Fast-Charging Stations With a Hydrogen Chain Under Grid-Connection Limits"
+authors:
+  - family-names: "Le"
+    given-names: "Dinh Quyen"
+    affiliation: "University of Science and Technology - The University of Danang"
+  - family-names: "Duong"
+    given-names: "Minh Quan"
+    affiliation: "University of Science and Technology - The University of Danang; Advanced Institute of Science and Technology - The University of Danang"
+    email: "dmquan@dut.udn.vn"
+version: "1.1.0"
+date-released: "2026-10-25"
+license: MIT
+repository-code: "https://github.com/ledinhquyen999-art/lifetime-guaranteed-h2-charging"
